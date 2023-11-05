@@ -4,6 +4,7 @@ import info.bitrich.xchangestream.core.ProductSubscription;
 import info.bitrich.xchangestream.core.StreamingExchange;
 import info.bitrich.xchangestream.core.StreamingExchangeFactory;
 import lombok.RequiredArgsConstructor;
+import org.knowm.xchange.BaseExchange;
 import org.knowm.xchange.Exchange;
 import org.knowm.xchange.ExchangeFactory;
 import org.knowm.xchange.ExchangeSpecification;
@@ -124,7 +125,8 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
     public void configure() {
         try {
             // Instantiate exchange class.
-            Class<? extends Exchange> exchangeClass = Class.forName(getExchangeClassName()).asSubclass(Exchange.class);
+            Class<? extends Exchange> exchangeClass = Class.forName(getExchangeClassName()).asSubclass(BaseExchange.class);
+//            Class<? extends Exchange> exchangeClass = Class.forName(getExchangeClassName()).asSubclass(Exchange.class);
             ExchangeSpecification exchangeSpecification = new ExchangeSpecification(exchangeClass);
 
             // Exchange configuration.
@@ -155,7 +157,7 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
             xChangeMarketDataService = xChangeExchange.getMarketDataService();
             xChangeTradeService = xChangeExchange.getTradeService();
 
-            if (exchangeParameters.isTickerStreamEnabled()) {
+            if (!exchangeParameters.isTickerStreamEnabled()) {
                 ProductSubscription.ProductSubscriptionBuilder builder = ProductSubscription.create();
                 applicationContext
                         .getBeansWithAnnotation(CassandreStrategy.class)

@@ -1,0 +1,27 @@
+--- #################### 数据库相关配置 ####################
+spring:
+  # 数据源配置项
+  datasource:
+    #driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/cassandre-database?allowMultiQueries=true&useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&nullCatalogMeansCurrent=true # MySQL Connector/J 8.X 连接的示例
+    username: root
+    password: 123456
+  jpa:
+    show-sql: true
+    database-platform: org.hibernate.dialect.MySQL5Dialect
+
+bot: # 市场相关配置
+  exchange:   # Exchange configuration.
+    driverClassName: org.knowm.xchange.okex.OkexExchange
+    username: w1999wtw3537@sina.com
+    passphrase: 123456
+    key: 6054ad25365ac6000689a998
+    secret: af080d55-afe3-47c9-8ec1-4b479fbcc5e7
+    modes:  # Modes.
+      sandbox: true
+      dry: false
+    # Exchange API calls rates (In ms or standard ISO 8601 duration like 'PT5S').
+    rates:
+      account: 100
+      ticker: 101
+      trade: 102

@@ -1,11 +1,14 @@
 package tech.cassandre.trading.bot.dto.util;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Value;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.dto.meta.WalletHealth;
 import org.knowm.xchange.instrument.Instrument;
 import tech.cassandre.trading.bot.util.test.ExcludeFromCoverageGeneratedReport;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**

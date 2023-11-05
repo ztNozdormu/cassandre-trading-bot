@@ -22,8 +22,7 @@ public class ExchangeServiceXChangeImplementation extends BaseService implements
     @SuppressWarnings("checkstyle:DesignForExtension")
     public Set<CurrencyPairDTO> getAvailableCurrencyPairs() {
         logger.debug("Retrieving available currency pairs");
-        return exchange.getExchangeMetaData()
-                .getCurrencyPairs()
+        return exchange.getExchangeMetaData().getInstruments()
                 .keySet()
                 .stream()
                 .peek(cp -> logger.debug(" - {} available", cp))

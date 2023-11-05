@@ -14,7 +14,7 @@ import java.util.Optional;
 /**
  * DatabaseAutoConfiguration configures the database.
  */
-@Configuration
+//@Configuration
 @EntityScan(basePackages = "tech.cassandre.trading.bot.domain")
 @EnableJpaAuditing(dateTimeProviderRef = "auditingDateTimeProvider")
 @EnableJpaRepositories(basePackages = "tech.cassandre.trading.bot.repository")
