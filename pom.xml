@@ -80,6 +80,7 @@
 		<bucket4j.version>7.6.0</bucket4j.version>
 		<liquibase.version>4.22.0</liquibase.version>
 		<opencsv.version>5.7.1</opencsv.version>
+		<ta4j.version>0.15</ta4j.version>
 
 		<!-- Core utils -->
 		<lombok.version>1.18.28</lombok.version>
