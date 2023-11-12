@@ -46,7 +46,6 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
-
 /**
  * ExchangeConfiguration configures the exchange connection.
  */
@@ -126,11 +125,11 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
         try {
             // Instantiate exchange class.
             Class<? extends Exchange> exchangeClass = Class.forName(getExchangeClassName()).asSubclass(BaseExchange.class);
-//            Class<? extends Exchange> exchangeClass = Class.forName(getExchangeClassName()).asSubclass(Exchange.class);
             ExchangeSpecification exchangeSpecification = new ExchangeSpecification(exchangeClass);
 
             // Exchange configuration.
             exchangeSpecification.setUserName(exchangeParameters.getUsername());
+            exchangeSpecification.setPassword(exchangeParameters.getPassphrase());
             exchangeSpecification.setApiKey(exchangeParameters.getKey());
             exchangeSpecification.setSecretKey(exchangeParameters.getSecret());
             exchangeSpecification.getResilience().setRateLimiterEnabled(true);
@@ -157,7 +156,7 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
             xChangeMarketDataService = xChangeExchange.getMarketDataService();
             xChangeTradeService = xChangeExchange.getTradeService();
 
-            if (!exchangeParameters.isTickerStreamEnabled()) {
+            if (exchangeParameters.isTickerStreamEnabled()) {
                 ProductSubscription.ProductSubscriptionBuilder builder = ProductSubscription.create();
                 applicationContext
                         .getBeansWithAnnotation(CassandreStrategy.class)
@@ -175,7 +174,7 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
 
             // Force login to check credentials.
             logger.info("Exchange connection with driver {}", exchangeParameters.getDriverClassName());
-            xChangeAccountService.getAccountInfo();
+           xChangeAccountService.getAccountInfo();
             logger.info("Exchange connection successful with username {} (Dry mode: {} / Sandbox: {})",
                     exchangeParameters.getUsername(),
                     exchangeParameters.getModes().getDry(),

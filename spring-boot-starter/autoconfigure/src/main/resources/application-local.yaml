@@ -10,13 +10,13 @@ spring:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL5Dialect
 
-bot: # 市场相关配置
+cassandre.trading.bot: # 市场相关配置
   exchange:   # Exchange configuration.
     driverClassName: org.knowm.xchange.okex.OkexExchange
-    username: w1999wtw3537@sina.com
-    passphrase: 123456
-    key: 6054ad25365ac6000689a998
-    secret: af080d55-afe3-47c9-8ec1-4b479fbcc5e7
+    username: 18728474132
+    passphrase: @He1254984260ro
+    key: bdbb3fbc-0947-4ac9-85c1-1f746ac7621c
+    secret: 953A32604F43CCBD1A65E943E617A957
     modes:  # Modes.
       sandbox: true
       dry: false

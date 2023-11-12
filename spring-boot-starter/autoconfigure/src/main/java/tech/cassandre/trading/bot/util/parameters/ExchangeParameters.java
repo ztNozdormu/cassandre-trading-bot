@@ -24,7 +24,7 @@ import java.time.Duration;
 @EnableConfigurationProperties({ExchangeParameters.class,
         ExchangeParameters.Modes.class,
         ExchangeParameters.Rates.class})
-@ConfigurationProperties(prefix = "bot.exchange")
+@ConfigurationProperties(prefix = "cassandre.trading.bot.exchange")
 public class ExchangeParameters {
 
     /** Driver class name. For example: org.knowm.xchange.coinbasepro.CoinbaseProExchange, kraken, kucoin. */

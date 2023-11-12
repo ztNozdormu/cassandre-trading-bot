@@ -183,6 +183,12 @@
             <artifactId>ta4j-core</artifactId>
             <version>${ta4j.version}</version>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>jakarta.ws.rs</groupId>-->
+<!--            <artifactId>jakarta.ws.rs-api</artifactId>-->
+<!--            <version>3.1.0</version>-->
+<!--        </dependency>-->
+<!--        -->
     </dependencies>
     <!-- =========================================================================================================== -->
 

@@ -1,6 +1,7 @@
 package tech.cassandre.trading.bot.dto.user;
 
 /**
+ *  DTO representing an account owned by a {@link AccountDTO}.
  * {@link AccountDTO} features.
  */
 public enum AccountFeatureDTO {
@@ -16,7 +17,7 @@ public enum AccountFeatureDTO {
 
     /** You can fund other margin traders with funds allocated to this wallet to earn an interest. */
     MARGIN_FUNDING,
-
+    /** You can fund other margin traders with funds allocated to this wallet to earn an interest. */
     FUTURES_TRADING;
 
 }
