@@ -6,6 +6,7 @@ import lombok.ToString;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Conditional;
 import org.springframework.validation.annotation.Validated;
 import tech.cassandre.trading.bot.util.validator.Rate;
 

@@ -13,14 +13,15 @@ public class JasyptTest {
 
     @Autowired
     private StringEncryptor encryptor;
-
     @Test
     public void getPass() {
-        String url = encryptor.encrypt("jdbc:mysql://localhost:3306/mydb?autoReconnect=true&serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf-8");
-        String name = encryptor.encrypt("root");
-        String password = encryptor.encrypt("123456");
-        System.out.println("database url: " + url);
-        System.out.println("database name: " + name);
-        System.out.println("database password: " + password);
+        String username = encryptor.encrypt("18728474132");
+        String passphrase = encryptor.encrypt("@He1254984260ro");
+        String key = encryptor.encrypt("bdbb3fbc-0947-4ac9-85c1-1f746ac7621c");
+        String secret = encryptor.encrypt("953A32604F43CCBD1A65E943E617A957");
+        System.out.println("username : " + username);
+        System.out.println("passphrase : " + passphrase);
+        System.out.println("key : " + key);
+        System.out.println("secret: " + secret);
     }
 }

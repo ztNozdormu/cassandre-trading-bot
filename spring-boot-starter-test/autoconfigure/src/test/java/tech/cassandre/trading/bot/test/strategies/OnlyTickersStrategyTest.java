@@ -1,5 +1,6 @@
 package tech.cassandre.trading.bot.test.strategies;
 
+import org.jasypt.encryption.StringEncryptor;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,7 @@ import static tech.cassandre.trading.bot.dto.util.CurrencyDTO.USDT;
 @Import(TickerFluxMock.class)
 @DisplayName("Only tickers strategy test")
 @DirtiesContext(classMode = BEFORE_EACH_TEST_METHOD)
-public class OnlyTickersStrategyTest extends BaseTest {
+public class OnlyTickersStrategyTest extends BaseTest{
 
     @Autowired
     private TickerFluxMock tickerFluxMock;
