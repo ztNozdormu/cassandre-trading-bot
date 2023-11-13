@@ -14,7 +14,7 @@ cassandre.trading.bot: # 市场相关配置
   exchange:   # Exchange configuration.
     driverClassName: org.knowm.xchange.okex.OkexExchange
     username: 18728474132
-    passphrase: @He1254984260ro
+    passphrase: '@He1254984260ro'
     key: bdbb3fbc-0947-4ac9-85c1-1f746ac7621c
     secret: 953A32604F43CCBD1A65E943E617A957
     modes:  # Modes.

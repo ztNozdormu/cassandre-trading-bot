@@ -1,3 +1,9 @@
 spring:
   profiles:
     active: local
+jasypt:
+  encryptor:
+    password: "通过启动参数传入"
+    property:
+      prefix: "ENC@["
+      suffix: "]"
