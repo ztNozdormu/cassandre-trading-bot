@@ -26,6 +26,7 @@ import tech.cassandre.trading.bot.service.MarketServiceBacktestingImplementation
 import tech.cassandre.trading.bot.util.mapper.BacktestingTickerMapper;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,6 +34,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Ticker flux mock - Allows developers to simulate tickers throw candles csv files importation.
@@ -103,6 +105,7 @@ public class TickerFluxMock {
 
         // Getting the list of files to import and insert them in database.
         logger.info("Importing candles for backtesting...");
+        AtomicReference<BigDecimal> errovolume = new AtomicReference<>(new BigDecimal(0));
         Set<CurrencyPairDTO> currencyPairUsed = new HashSet<>();
         getCandlesFilesToLoad()
                 .stream()
@@ -120,6 +123,7 @@ public class TickerFluxMock {
                                 .forEach(importedCandle -> {
                                     logger.debug("Importing candle {}", importedCandle);
                                     BacktestingCandle candle = backtestingTickerMapper.mapToBacktestingCandle(importedCandle);
+                                    errovolume.set(candle.getVolume());
                                     // Specific fields in Backtesting candle.
                                     BacktestingCandleId id = new BacktestingCandleId();
                                     id.setTestSessionId(marketServiceBacktestingImplementation.getTestSessionId());
@@ -132,7 +136,7 @@ public class TickerFluxMock {
                                     currencyPairUsed.add(id.getCurrencyPairDTO());
                                 });
                     } catch (IOException e) {
-                        logger.error("Impossible to load candles for backtesting: {}", e.getMessage());
+                        logger.error("Impossible to load candles for backtesting: {},error num is {}", e.getMessage(),errovolume.get());
                     }
                 });
 

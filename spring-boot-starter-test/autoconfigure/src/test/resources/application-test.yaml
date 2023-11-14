@@ -13,10 +13,10 @@ spring:
 cassandre.trading.bot: # 市场相关配置
   exchange:   # Exchange configuration.
     driverClassName: org.knowm.xchange.okex.OkexExchange
-    username: ”ENC@[Wi7oU9itkox7qTVOcKuwb2HPmg9c8Gx3]“
-    passphrase: “ENC@[ZZSgvd6bLwTtZC+KlzAteTphrR+GY88X]”
-    key: ”ENC@[8hx7GsSZKiZM5WMbpswSDT+MBEbk8h3NMpCoRt+96XRqgDrOGHUzgzKHzrAS8IAD]”
-    secret: ”ENC@[gfovccbqgb5SVqQ5QMebb73TmWGjUa5d05cNeXwHwZjJkYViP+9xyH+YGU/vQmP+]“
+    username: ENC(Wi7oU9itkox7qTVOcKuwb2HPmg9c8Gx3)
+    passphrase: ENC(ZZSgvd6bLwTtZC+KlzAteTphrR+GY88X)
+    key: ENC(8hx7GsSZKiZM5WMbpswSDT+MBEbk8h3NMpCoRt+96XRqgDrOGHUzgzKHzrAS8IAD)
+    secret: ENC(gfovccbqgb5SVqQ5QMebb73TmWGjUa5d05cNeXwHwZjJkYViP+9xyH+YGU/vQmP+)
     modes:  # Modes.
       sandbox: true
       dry: true
@@ -28,8 +28,8 @@ cassandre.trading.bot: # 市场相关配置
 cassandre:
   trading:
     jasypt:
-  encryptor:
-    password: "启动参数传入或者用插件生成"
-    property:
-      prefix: "ENC@["
-      suffix: "]"
+      encryptor:
+        password: "启动参数传入"
+        property:
+          prefix: "ENC@["
+          suffix: "]"
