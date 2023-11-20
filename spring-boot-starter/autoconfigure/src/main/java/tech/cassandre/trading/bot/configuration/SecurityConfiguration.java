@@ -9,14 +9,21 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import tech.cassandre.trading.bot.util.parameters.SecurityParameters;
 
+/**
+ * DatabaseAutoConfiguration configures the database.
+ */
 @Configuration
 @EnableConfigurationProperties(SecurityParameters.class)
 @RequiredArgsConstructor
-public class SecurityConfig {
+public class SecurityConfiguration {
 
     /** Security parameters. */
     private final SecurityParameters securityParameters;
 
+    /**
+     * jasyptStringEncryptor.
+     * @return 加密对象
+     */
     @Bean("jasyptStringEncryptor")
     public StringEncryptor stringEncryptor() {
         PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();

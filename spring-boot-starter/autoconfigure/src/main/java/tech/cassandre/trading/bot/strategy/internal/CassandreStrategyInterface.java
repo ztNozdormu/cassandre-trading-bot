@@ -195,7 +195,9 @@ public interface CassandreStrategyInterface {
     BigDecimal getLastPriceForCurrencyPair(CurrencyPairDTO currencyPair);
 
     /**
-     * 指标初始化 这里进行指标计算处理
+     * 指标初始化 这里进行指标计算处理.
      */
-    default void initIndicators() {}
+    default void initIndicators() {
+
+    }
 }

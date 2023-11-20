@@ -136,7 +136,7 @@ public class TickerFluxMock {
                                     currencyPairUsed.add(id.getCurrencyPairDTO());
                                 });
                     } catch (IOException e) {
-                        logger.error("Impossible to load candles for backtesting: {},error num is {}", e.getMessage(),errovolume.get());
+                        logger.error("Impossible to load candles for backtesting: {},error num is {}", e.getMessage(), errovolume.get());
                     }
                 });
 
