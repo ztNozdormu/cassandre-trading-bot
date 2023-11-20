@@ -13,6 +13,9 @@ spring:
       hibernate:
         hbm2ddl:
           auto: update
+  liquibase:
+    enabled: false
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
 
 cassandre.trading.bot: # 市场相关配置
   exchange:   # Exchange configuration.
