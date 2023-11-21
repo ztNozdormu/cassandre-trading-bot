@@ -126,35 +126,40 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
             // Instantiate exchange class.
             Class<? extends Exchange> exchangeClass = Class.forName(getExchangeClassName()).asSubclass(BaseExchange.class);
             ExchangeSpecification exchangeSpecification = new ExchangeSpecification(exchangeClass);
+            if (!exchangeParameters.isTest()) {
+                // Exchange configuration.
+                exchangeSpecification.setUserName(exchangeParameters.getUsername());
+                exchangeSpecification.setPassword(exchangeParameters.getPassphrase());
+                exchangeSpecification.setApiKey(exchangeParameters.getKey());
+                exchangeSpecification.setSecretKey(exchangeParameters.getSecret());
+                exchangeSpecification.getResilience().setRateLimiterEnabled(true);
+                exchangeSpecification.setExchangeSpecificParametersItem("Use_Sandbox", exchangeParameters.getModes().getSandbox());
+                exchangeSpecification.setExchangeSpecificParametersItem("passphrase", exchangeParameters.getPassphrase());
+                exchangeSpecification.setProxyHost(exchangeParameters.getProxyHost());
+                exchangeSpecification.setProxyPort(exchangeParameters.getProxyPort());
+                exchangeSpecification.setSslUri(exchangeParameters.getSslUri());
+                exchangeSpecification.setPlainTextUri(exchangeParameters.getPlainTextUri());
+                exchangeSpecification.setHost(exchangeParameters.getHost());
+                if (exchangeParameters.getPort() != null) {
+                    exchangeSpecification.setPort(Integer.parseInt(exchangeParameters.getPort()));
+                }
 
-            // Exchange configuration.
-            exchangeSpecification.setUserName(exchangeParameters.getUsername());
-            exchangeSpecification.setPassword(exchangeParameters.getPassphrase());
-            exchangeSpecification.setApiKey(exchangeParameters.getKey());
-            exchangeSpecification.setSecretKey(exchangeParameters.getSecret());
-            exchangeSpecification.getResilience().setRateLimiterEnabled(true);
-            exchangeSpecification.setExchangeSpecificParametersItem("Use_Sandbox", exchangeParameters.getModes().getSandbox());
-            exchangeSpecification.setExchangeSpecificParametersItem("passphrase", exchangeParameters.getPassphrase());
-            exchangeSpecification.setProxyHost(exchangeParameters.getProxyHost());
-            exchangeSpecification.setProxyPort(exchangeParameters.getProxyPort());
-            exchangeSpecification.setSslUri(exchangeParameters.getSslUri());
-            exchangeSpecification.setPlainTextUri(exchangeParameters.getPlainTextUri());
-            exchangeSpecification.setHost(exchangeParameters.getHost());
-            if (exchangeParameters.getPort() != null) {
-                exchangeSpecification.setPort(Integer.parseInt(exchangeParameters.getPort()));
-            }
-
-            // Creates XChange services.
-            if (exchangeParameters.isTickerStreamEnabled()) {
-                exchangeSpecification.setShouldLoadRemoteMetaData(true); // this must be set or Streaming will not download currencies by default
-                // Create Streaming XChange services
-                xChangeExchange = StreamingExchangeFactory.INSTANCE.createExchange(exchangeSpecification);
+                // Creates XChange services.
+                if (exchangeParameters.isTickerStreamEnabled()) {
+                    exchangeSpecification.setShouldLoadRemoteMetaData(true); // this must be set or Streaming will not download currencies by default
+                    // Create Streaming XChange services
+                    xChangeExchange = StreamingExchangeFactory.INSTANCE.createExchange(exchangeSpecification);
+                } else {
+                    xChangeExchange = ExchangeFactory.INSTANCE.createExchange(exchangeSpecification);
+                }
+                xChangeAccountService = xChangeExchange.getAccountService();
+                xChangeTradeService = xChangeExchange.getTradeService();
+                xChangeAccountService.getAccountInfo();
             } else {
                 xChangeExchange = ExchangeFactory.INSTANCE.createExchange(exchangeSpecification);
             }
-            xChangeAccountService = xChangeExchange.getAccountService();
+
             xChangeMarketDataService = xChangeExchange.getMarketDataService();
-            xChangeTradeService = xChangeExchange.getTradeService();
 
             if (exchangeParameters.isTickerStreamEnabled()) {
                 ProductSubscription.ProductSubscriptionBuilder builder = ProductSubscription.create();
@@ -174,7 +179,7 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
 
             // Force login to check credentials.
             logger.info("Exchange connection with driver {}", exchangeParameters.getDriverClassName());
-            xChangeAccountService.getAccountInfo();
+
             logger.info("Exchange connection successful with username {} (Dry mode: {} / Sandbox: {})",
                     exchangeParameters.getUsername(),
                     exchangeParameters.getModes().getDry(),

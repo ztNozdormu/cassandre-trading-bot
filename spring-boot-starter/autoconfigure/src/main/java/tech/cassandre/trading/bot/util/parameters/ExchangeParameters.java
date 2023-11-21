@@ -63,6 +63,8 @@ public class ExchangeParameters {
 
     /** Exchange port parameter. */
     private String port;
+    /** Test env . default true  */
+    private boolean test;
 
     /** Modes. */
     @Valid

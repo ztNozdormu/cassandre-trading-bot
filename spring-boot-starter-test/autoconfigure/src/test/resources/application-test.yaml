@@ -8,7 +8,7 @@ spring:
     password: 123456
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.MySQL5Dialect
+    database-platform: org.hibernate.dialect.MySQL55Dialect
     properties:
       hibernate:
         hbm2ddl:
@@ -19,6 +19,7 @@ spring:
 
 cassandre.trading.bot: # 市场相关配置
   exchange:   # Exchange configuration.
+    test: true
     driverClassName: org.knowm.xchange.okex.OkexExchange
     username: ENC(Wi7oU9itkox7qTVOcKuwb2HPmg9c8Gx3)
     passphrase: ENC(ZZSgvd6bLwTtZC+KlzAteTphrR+GY88X)

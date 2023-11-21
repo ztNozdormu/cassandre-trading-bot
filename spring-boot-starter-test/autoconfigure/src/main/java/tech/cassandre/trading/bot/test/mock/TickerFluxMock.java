@@ -24,7 +24,6 @@ import tech.cassandre.trading.bot.repository.TradeRepository;
 import tech.cassandre.trading.bot.service.MarketService;
 import tech.cassandre.trading.bot.service.MarketServiceBacktestingImplementation;
 import tech.cassandre.trading.bot.util.mapper.BacktestingTickerMapper;
-
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Files;
