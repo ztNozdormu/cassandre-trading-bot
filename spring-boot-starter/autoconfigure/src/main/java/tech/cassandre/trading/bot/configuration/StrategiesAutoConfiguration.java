@@ -46,6 +46,7 @@ import tech.cassandre.trading.bot.util.parameters.ExchangeParameters;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -197,12 +198,15 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
                         Strategy newStrategy = new Strategy();
                         newStrategy.setStrategyId(annotation.strategyId());
                         newStrategy.setName(annotation.strategyName());
+                        newStrategy.setCreatedOn(ZonedDateTime.now());
+                        newStrategy.setUpdatedOn(ZonedDateTime.now());
                         strategyDTO = STRATEGY_MAPPER.mapToStrategyDTO(strategyRepository.save(newStrategy));
                         logger.debug("Strategy created in database: {}", newStrategy);
                     } else {
                         // =============================================================================================
                         // If the strategy is in database.
                         strategyInDatabase.get().setName(strategyName);
+                        strategyInDatabase.get().setUpdatedOn(ZonedDateTime.now());
                         strategyDTO = STRATEGY_MAPPER.mapToStrategyDTO(strategyRepository.save(strategyInDatabase.get()));
                         logger.debug("Strategy updated in database: {}", strategyInDatabase.get());
                     }
@@ -257,8 +261,9 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
         } else {
             if (user.get().getAccounts().isEmpty()) {
                 // We were able to retrieve the user from the exchange but no account was found.
-                throw new ConfigurationException("User information retrieved but no associated accounts found",
-                        "Check the permissions you set on the API you created");
+//                throw new ConfigurationException("User information retrieved but no associated accounts found",
+//                        "Check the permissions you set on the API you created");
+                logger.warn("没有账号信息!");
             } else {
                 logger.info("Accounts available on the exchange:");
                 user.get()
@@ -301,7 +306,10 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
                 .collect(Collectors.toSet());
         if (!strategiesWithoutTradeAccount.isEmpty()) {
             final String strategyList = String.join(",", strategiesWithoutTradeAccount);
-            throw new ConfigurationException("Your strategies specify a trading account that doesn't exist",
+//            throw new ConfigurationException("Your strategies specify a trading account that doesn't exist",
+//                    "Check your getTradeAccount(Set<AccountDTO> accounts) method as it returns an empty result - Strategies in error: " + strategyList + "\r\n"
+//                            + "See https://trading-bot.cassandre.tech/ressources/how-tos/how-to-fix-common-problems.html#your-strategies-specifies-a-trading-account-that-doesn-t-exist");
+            logger.warn("Your strategies specify a trading account that doesn't exist",
                     "Check your getTradeAccount(Set<AccountDTO> accounts) method as it returns an empty result - Strategies in error: " + strategyList + "\r\n"
                             + "See https://trading-bot.cassandre.tech/ressources/how-tos/how-to-fix-common-problems.html#your-strategies-specifies-a-trading-account-that-doesn-t-exist");
         }

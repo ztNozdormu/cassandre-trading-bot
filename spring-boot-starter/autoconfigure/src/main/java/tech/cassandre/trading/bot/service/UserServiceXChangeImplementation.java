@@ -39,9 +39,11 @@ public class UserServiceXChangeImplementation extends BaseService implements Use
             // Consume a token from the token bucket.
             // If a token is not available this method will block until the refill adds one to the bucket.
             bucket.asBlocking().consume(1);
-
+             UserDTO user = UserDTO.builder().build();
             logger.debug("Retrieving account information");
-            final UserDTO user = ACCOUNT_MAPPER.mapToUserDTO(xChangeAccountService.getAccountInfo());
+            if (xChangeAccountService != null) {
+                user = ACCOUNT_MAPPER.mapToUserDTO(xChangeAccountService.getAccountInfo());
+            }
             logger.debug("Account information retrieved " + user);
             // Update the cached reply.
             if (user != null && user.getAccounts() != null) {
