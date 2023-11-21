@@ -174,7 +174,7 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
 
             // Force login to check credentials.
             logger.info("Exchange connection with driver {}", exchangeParameters.getDriverClassName());
-           xChangeAccountService.getAccountInfo();
+            xChangeAccountService.getAccountInfo();
             logger.info("Exchange connection successful with username {} (Dry mode: {} / Sandbox: {})",
                     exchangeParameters.getUsername(),
                     exchangeParameters.getModes().getDry(),
