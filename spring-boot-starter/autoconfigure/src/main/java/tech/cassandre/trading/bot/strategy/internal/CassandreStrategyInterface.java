@@ -146,7 +146,14 @@ public interface CassandreStrategyInterface {
     default void onTickersUpdates(Map<CurrencyPairDTO, TickerDTO> tickers) {
         // Can be overridden by a strategy developer to receive events.
     }
-
+    /**
+     * Method called by Cassandre when there are period updates.
+     * 根据ticker时间计算是否达到周期 则更新一次K线数据
+     * @param candles  period updates
+     */
+    default void onCandlesUpdates(Map<CurrencyPairDTO, TickerDTO> candles) {
+        // Can be overridden by a strategy developer to receive events.
+    }
     /**
      * Method called by Cassandre when there are orders updates.
      *
