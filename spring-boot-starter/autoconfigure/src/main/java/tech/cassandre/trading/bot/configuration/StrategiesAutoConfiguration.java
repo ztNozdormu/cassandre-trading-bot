@@ -241,8 +241,9 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
      */
     private UserDTO checkConfiguration(final Map<String, Object> strategies) {
         // Prints all the supported currency pairs.
+        Set<CurrencyPairDTO> currencyPairDTOS = exchangeService.getAvailableCurrencyPairs();
         logger.info("Supported currency pairs by the exchange: {}",
-                exchangeService.getAvailableCurrencyPairs()
+                currencyPairDTOS
                         .stream()
                         .map(CurrencyPairDTO::toString)
                         .collect(Collectors.joining(", ")));

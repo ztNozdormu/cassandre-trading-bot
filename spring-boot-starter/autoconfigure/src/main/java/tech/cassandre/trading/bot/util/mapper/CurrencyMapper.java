@@ -2,6 +2,7 @@ package tech.cassandre.trading.bot.util.mapper;
 
 import org.knowm.xchange.currency.Currency;
 import org.knowm.xchange.currency.CurrencyPair;
+import org.knowm.xchange.derivative.FuturesContract;
 import org.knowm.xchange.instrument.Instrument;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -39,7 +40,15 @@ public interface CurrencyMapper {
     }
 
     default CurrencyPairDTO mapToCurrencyPairDTO(Instrument source) {
-        final CurrencyPair cp = (CurrencyPair) source;
+        CurrencyPair cp = CurrencyPair.BTC_USDT;
+        String prompt = "";
+        if(source instanceof FuturesContract){
+            cp = ((FuturesContract) source).getCurrencyPair();
+            prompt = ((FuturesContract) source).getPrompt();// TODO
+        }
+        if(source instanceof CurrencyPair){
+            cp = (CurrencyPair) source;
+        }
         CurrencyDTO base = new CurrencyDTO(cp.base.getCurrencyCode());
         CurrencyDTO quote = new CurrencyDTO(cp.counter.getCurrencyCode());
         return new CurrencyPairDTO(base, quote);
