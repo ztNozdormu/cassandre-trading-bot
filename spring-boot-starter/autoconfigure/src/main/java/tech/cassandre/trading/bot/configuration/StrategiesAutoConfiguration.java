@@ -46,7 +46,6 @@ import tech.cassandre.trading.bot.util.parameters.ExchangeParameters;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -198,15 +197,12 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
                         Strategy newStrategy = new Strategy();
                         newStrategy.setStrategyId(annotation.strategyId());
                         newStrategy.setName(annotation.strategyName());
-                        newStrategy.setCreatedOn(ZonedDateTime.now());
-                        newStrategy.setUpdatedOn(ZonedDateTime.now());
-                        strategyDTO = STRATEGY_MAPPER.mapToStrategyDTO(strategyRepository.save(newStrategy));
+                        strategyDTO = STRATEGY_MAPPER.mapToStrategyDTO(strategyRepository.saveAndFlush(newStrategy));
                         logger.debug("Strategy created in database: {}", newStrategy);
                     } else {
                         // =============================================================================================
                         // If the strategy is in database.
                         strategyInDatabase.get().setName(strategyName);
-                        strategyInDatabase.get().setUpdatedOn(ZonedDateTime.now());
                         strategyDTO = STRATEGY_MAPPER.mapToStrategyDTO(strategyRepository.save(strategyInDatabase.get()));
                         logger.debug("Strategy updated in database: {}", strategyInDatabase.get());
                     }

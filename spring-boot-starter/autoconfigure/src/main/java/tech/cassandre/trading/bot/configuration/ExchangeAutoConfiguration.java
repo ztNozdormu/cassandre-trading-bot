@@ -16,7 +16,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import si.mazi.rescu.HttpStatusIOException;
 import tech.cassandre.trading.bot.batch.AccountFlux;
 import tech.cassandre.trading.bot.batch.OrderFlux;
 import tech.cassandre.trading.bot.batch.PositionFlux;
@@ -41,7 +40,7 @@ import tech.cassandre.trading.bot.strategy.internal.CassandreStrategyInterface;
 import tech.cassandre.trading.bot.util.base.configuration.BaseConfiguration;
 import tech.cassandre.trading.bot.util.exception.ConfigurationException;
 import tech.cassandre.trading.bot.util.parameters.ExchangeParameters;
-
+import si.mazi.rescu.HttpStatusIOException;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.util.Objects;
@@ -188,6 +187,7 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
             // If we can't find the exchange class.
             throw new ConfigurationException("Impossible to find the exchange driver class you requested: " + exchangeParameters.getDriverClassName(),
                     "Choose and configure a valid exchange (https://trading-bot.cassandre.tech/learn/exchange-connection-configuration.html#how-does-it-works)");
+
         } catch (HttpStatusIOException e) {
             if (e.getHttpStatusCode() == UNAUTHORIZED_STATUS_CODE) {
                 // Authorization failure.

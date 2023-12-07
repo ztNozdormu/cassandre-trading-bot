@@ -163,7 +163,7 @@
             <groupId>org.knowm.xchange</groupId>
             <artifactId>xchange-okex</artifactId>
             <version>${xchange.version}</version>
-<!--            <scope>test</scope>-->
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.knowm.xchange</groupId>
