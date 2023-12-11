@@ -6,6 +6,7 @@ import tech.cassandre.trading.bot.dto.trade.OrderDTO;
 import tech.cassandre.trading.bot.dto.trade.TradeDTO;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
+import tech.cassandre.trading.bot.dto.web3.CandleStickDO;
 import tech.cassandre.trading.bot.strategy.BasicCassandreStrategy;
 
 import java.math.BigDecimal;
@@ -106,6 +107,12 @@ public interface CassandreStrategyInterface {
     void tickersUpdates(Set<TickerDTO> tickers);
 
     /**
+     * Method called by web3Server on candles updates.
+     *
+     * @param candles candles updates
+     */
+    void candlesUpdates(Set<CandleStickDO> candles);
+    /**
      * Method called by streams on orders updates.
      *
      * @param orders orders updates
@@ -146,14 +153,16 @@ public interface CassandreStrategyInterface {
     default void onTickersUpdates(Map<CurrencyPairDTO, TickerDTO> tickers) {
         // Can be overridden by a strategy developer to receive events.
     }
+
     /**
-     * Method called by Cassandre when there are period updates.
-     * 根据ticker时间计算是否达到周期 则更新一次K线数据
-     * @param candles  period updates
+     * Method called by Cassandre when there are candles updates.
+     *
+     * @param candles candles updates
      */
-    default void onCandlesUpdates(Map<CurrencyPairDTO, TickerDTO> candles) {
+    default void onCandlesUpdates(Map<CurrencyPairDTO, CandleStickDO> candles) {
         // Can be overridden by a strategy developer to receive events.
     }
+
     /**
      * Method called by Cassandre when there are orders updates.
      *

@@ -8,6 +8,7 @@ import tech.cassandre.trading.bot.dto.trade.OrderDTO;
 import tech.cassandre.trading.bot.dto.trade.TradeDTO;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
+import tech.cassandre.trading.bot.dto.web3.CandleStickDO;
 import tech.cassandre.trading.bot.strategy.BasicCassandreStrategy;
 import tech.cassandre.trading.bot.util.base.strategy.BaseStrategy;
 
@@ -48,6 +49,9 @@ public abstract class CassandreStrategyImplementation extends BaseStrategy imple
 
     /** Last tickers received. */
     protected final Map<CurrencyPairDTO, TickerDTO> lastTickers = new LinkedHashMap<>();
+
+    /** candles received. */
+    protected final Map<CurrencyPairDTO, CandleStickDO> candleSticks = new LinkedHashMap<>();
 
     /** Positions previous status - used for onPositionsStatusUpdates() - Internal use only. */
     private final Map<Long, PositionStatusDTO> previousPositionsStatus = new LinkedHashMap<>();
@@ -113,6 +117,22 @@ public abstract class CassandreStrategyImplementation extends BaseStrategy imple
 
         // We notify the strategy.
         onTickersUpdates(tickersUpdates);
+    }
+
+    @Override
+    @SuppressWarnings("checkstyle:DesignForExtension")
+    public void candlesUpdates(final Set<CandleStickDO> candleStickDOS) {
+        // We only retrieve the tickers requested by the strategy (in real time).
+        final Set<CurrencyPairDTO> requestedCurrencyPairs = getRequestedCurrencyPairs();
+        // We build the results.
+        final Map<CurrencyPairDTO, CandleStickDO> tickersUpdates = candleStickDOS.stream()
+                .filter(candleStickDO -> requestedCurrencyPairs.contains(candleStickDO.getCurrencyPairDTO()))
+                // We also update the values of the last tickers received by the strategy.
+                .peek(candleStickDO -> candleSticks.put(new CurrencyPairDTO(candleStickDO.getCurrencyPair()), candleStickDO))
+                .collect(Collectors.toMap(CandleStickDO::getCurrencyPairDTO, Function.identity(), (id, value) -> id, LinkedHashMap::new));
+
+        // We notify the strategy.
+        onCandlesUpdates(tickersUpdates);
     }
 
     @Override
