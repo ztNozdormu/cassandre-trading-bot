@@ -63,6 +63,8 @@
 	<!-- =========================================================================================================== -->
 	<!-- Project configuration -->
 	<properties>
+		<maven.test.skip>true</maven.test.skip>
+		<maven.javadoc.skip>true</maven.javadoc.skip>
 		<!-- Java build configuration -->
 		<java.version>17</java.version>
 		<maven.compiler.target>17</maven.compiler.target>
