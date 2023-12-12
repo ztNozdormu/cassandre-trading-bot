@@ -12,7 +12,7 @@ import tech.cassandre.trading.bot.util.mapper.StrategyMapper;
 import tech.cassandre.trading.bot.util.mapper.TickerMapper;
 import tech.cassandre.trading.bot.util.mapper.TradeMapper;
 import tech.cassandre.trading.bot.util.mapper.UtilMapper;
-
+import tech.cassandre.trading.bot.util.mapper.CandleStickMapper;
 /**
  * Base.
  */
@@ -47,5 +47,8 @@ public abstract class Base {
 
     /** Position mapper. */
     protected static final PositionMapper POSITION_MAPPER = Mappers.getMapper(PositionMapper.class);
+    /** Candle Stick mapper. */
+    protected static final CandleStickMapper CANDLE_STICK_MAPPER = Mappers.getMapper(CandleStickMapper.class);
+
 
 }

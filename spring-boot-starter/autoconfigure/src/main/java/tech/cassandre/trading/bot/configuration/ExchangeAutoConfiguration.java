@@ -11,13 +11,20 @@ import org.knowm.xchange.ExchangeSpecification;
 import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.service.account.AccountService;
 import org.knowm.xchange.service.marketdata.MarketDataService;
+import org.knowm.xchange.web3Server.Web3ServerExchange;
+import org.knowm.xchange.web3Server.service.Web3ServerMarketDataService;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import si.mazi.rescu.RestProxyFactory;
-import tech.cassandre.trading.bot.batch.*;
+import tech.cassandre.trading.bot.batch.CandlePeriodFlux;
+import tech.cassandre.trading.bot.batch.OrderFlux;
+import tech.cassandre.trading.bot.batch.TickerFlux;
+import tech.cassandre.trading.bot.batch.AccountFlux;
+import tech.cassandre.trading.bot.batch.TickerStreamFlux;
+import tech.cassandre.trading.bot.batch.TradeFlux;
+import tech.cassandre.trading.bot.batch.PositionFlux;
 import tech.cassandre.trading.bot.repository.OrderRepository;
 import tech.cassandre.trading.bot.repository.PositionRepository;
 import tech.cassandre.trading.bot.repository.TradeRepository;
@@ -31,9 +38,6 @@ import tech.cassandre.trading.bot.service.TradeService;
 import tech.cassandre.trading.bot.service.TradeServiceXChangeImplementation;
 import tech.cassandre.trading.bot.service.UserService;
 import tech.cassandre.trading.bot.service.UserServiceXChangeImplementation;
-import tech.cassandre.trading.bot.service.web3Server.Web3Server;
-import tech.cassandre.trading.bot.service.web3Server.Web3ServerHistoryDataService;
-import tech.cassandre.trading.bot.service.web3Server.Web3ServerHistoryDataServiceImpl;
 import tech.cassandre.trading.bot.strategy.CassandreStrategy;
 import tech.cassandre.trading.bot.strategy.internal.CassandreStrategyInterface;
 import tech.cassandre.trading.bot.util.base.configuration.BaseConfiguration;
@@ -92,7 +96,7 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
     private MarketService marketService;
 
     /** Web3Server service. */
-    private Web3ServerHistoryDataService web3ServerHistoryDataService;
+    private Web3ServerMarketDataService web3ServerMarketDataService;
 
     /** Trade service. */
     private TradeService tradeService;
@@ -320,9 +324,10 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
      * @return web3ServerHistoryDataService
      */
     @Bean("web3ServerMarketDataService")
-    public Web3ServerHistoryDataService getWeb3ServerMarketDataService(){
-        Web3Server web3Server = RestProxyFactory.createProxy(Web3Server.class, "http://localhost:19001/");
-        return new Web3ServerHistoryDataServiceImpl(web3Server);
+    public Web3ServerMarketDataService getWeb3ServerMarketDataService() {
+        ExchangeSpecification exSpec = new ExchangeSpecification(Web3ServerExchange.class);
+        Exchange web3ServerExchange = ExchangeFactory.INSTANCE.createExchange(exSpec);
+        return (Web3ServerMarketDataService) web3ServerExchange.getMarketDataService();
     }
     /**
      * Getter for tradeService.

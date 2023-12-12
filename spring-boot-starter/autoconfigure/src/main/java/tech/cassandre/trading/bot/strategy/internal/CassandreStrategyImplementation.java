@@ -1,6 +1,7 @@
 package tech.cassandre.trading.bot.strategy.internal;
 
 import lombok.NonNull;
+import org.knowm.xchange.web3Server.dto.web3.CandleStickDO;
 import tech.cassandre.trading.bot.dto.market.TickerDTO;
 import tech.cassandre.trading.bot.dto.position.PositionDTO;
 import tech.cassandre.trading.bot.dto.position.PositionStatusDTO;
@@ -8,7 +9,7 @@ import tech.cassandre.trading.bot.dto.trade.OrderDTO;
 import tech.cassandre.trading.bot.dto.trade.TradeDTO;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
-import tech.cassandre.trading.bot.dto.web3.CandleStickDO;
+import tech.cassandre.trading.bot.dto.web3.CandleStickDTO;
 import tech.cassandre.trading.bot.strategy.BasicCassandreStrategy;
 import tech.cassandre.trading.bot.util.base.strategy.BaseStrategy;
 
@@ -121,15 +122,15 @@ public abstract class CassandreStrategyImplementation extends BaseStrategy imple
 
     @Override
     @SuppressWarnings("checkstyle:DesignForExtension")
-    public void candlesUpdates(final Set<CandleStickDO> candleStickDOS) {
+    public void candlesUpdates(final Set<CandleStickDTO> candleStickDOS) {
         // We only retrieve the tickers requested by the strategy (in real time).
         final Set<CurrencyPairDTO> requestedCurrencyPairs = getRequestedCurrencyPairs();
         // We build the results.
-        final Map<CurrencyPairDTO, CandleStickDO> tickersUpdates = candleStickDOS.stream()
-                .filter(candleStickDO -> requestedCurrencyPairs.contains(candleStickDO.getCurrencyPairDTO()))
+        final Map<CurrencyPairDTO, CandleStickDTO> tickersUpdates = candleStickDOS.stream()
+                .filter(candleStickDTO -> requestedCurrencyPairs.contains(candleStickDTO.getCurrencyPairDTO()))
                 // We also update the values of the last tickers received by the strategy.
-                .peek(candleStickDO -> candleSticks.put(new CurrencyPairDTO(candleStickDO.getCurrencyPair()), candleStickDO))
-                .collect(Collectors.toMap(CandleStickDO::getCurrencyPairDTO, Function.identity(), (id, value) -> id, LinkedHashMap::new));
+                .peek(candleStickDTO -> candleSticks.put(candleStickDTO.getCurrencyPairDTO(), candleStickDTO))
+                .collect(Collectors.toMap(CandleStickDTO::getCurrencyPairDTO, Function.identity(), (id, value) -> id, LinkedHashMap::new));
 
         // We notify the strategy.
         onCandlesUpdates(tickersUpdates);

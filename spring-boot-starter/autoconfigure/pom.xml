@@ -167,15 +167,15 @@
         </dependency>
         <dependency>
             <groupId>org.knowm.xchange</groupId>
-            <artifactId>xchange-stream-core</artifactId>
+            <artifactId>xchange-web3server</artifactId>
             <version>${xchange.version}</version>
             <scope>compile</scope>
         </dependency>
-        <!-- 指标库 -->
         <dependency>
-            <groupId>org.ta4j</groupId>
-            <artifactId>ta4j-core</artifactId>
-            <version>${ta4j.version}</version>
+            <groupId>org.knowm.xchange</groupId>
+            <artifactId>xchange-stream-core</artifactId>
+            <version>${xchange.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.github.ulisesbocchio</groupId>
@@ -191,11 +191,6 @@
             <groupId>org.bouncycastle</groupId>
             <artifactId>bcprov-jdk15on</artifactId>
             <version>1.69</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.datatype</groupId>
-            <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.13.5</version>
         </dependency>
     </dependencies>
     <!-- =========================================================================================================== -->

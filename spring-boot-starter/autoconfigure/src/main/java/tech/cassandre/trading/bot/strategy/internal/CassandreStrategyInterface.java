@@ -6,7 +6,7 @@ import tech.cassandre.trading.bot.dto.trade.OrderDTO;
 import tech.cassandre.trading.bot.dto.trade.TradeDTO;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
-import tech.cassandre.trading.bot.dto.web3.CandleStickDO;
+import tech.cassandre.trading.bot.dto.web3.CandleStickDTO;
 import tech.cassandre.trading.bot.strategy.BasicCassandreStrategy;
 
 import java.math.BigDecimal;
@@ -111,7 +111,7 @@ public interface CassandreStrategyInterface {
      *
      * @param candles candles updates
      */
-    void candlesUpdates(Set<CandleStickDO> candles);
+    void candlesUpdates(Set<CandleStickDTO> candles);
     /**
      * Method called by streams on orders updates.
      *
@@ -159,7 +159,7 @@ public interface CassandreStrategyInterface {
      *
      * @param candles candles updates
      */
-    default void onCandlesUpdates(Map<CurrencyPairDTO, CandleStickDO> candles) {
+    default void onCandlesUpdates(Map<CurrencyPairDTO, CandleStickDTO> candles) {
         // Can be overridden by a strategy developer to receive events.
     }
 
