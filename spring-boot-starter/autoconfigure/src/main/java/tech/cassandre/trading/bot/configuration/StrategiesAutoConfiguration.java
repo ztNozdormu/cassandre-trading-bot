@@ -8,12 +8,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import reactor.core.publisher.ConnectableFlux;
-import tech.cassandre.trading.bot.batch.AccountFlux;
-import tech.cassandre.trading.bot.batch.OrderFlux;
-import tech.cassandre.trading.bot.batch.PositionFlux;
-import tech.cassandre.trading.bot.batch.TickerFlux;
-import tech.cassandre.trading.bot.batch.TickerStreamFlux;
-import tech.cassandre.trading.bot.batch.TradeFlux;
+import tech.cassandre.trading.bot.batch.*;
 import tech.cassandre.trading.bot.domain.ImportedCandle;
 import tech.cassandre.trading.bot.domain.ImportedTicker;
 import tech.cassandre.trading.bot.domain.Strategy;
@@ -25,6 +20,7 @@ import tech.cassandre.trading.bot.dto.trade.TradeDTO;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.user.UserDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
+import tech.cassandre.trading.bot.dto.web3.CandleStickDO;
 import tech.cassandre.trading.bot.repository.ImportedCandleRepository;
 import tech.cassandre.trading.bot.repository.ImportedTickerRepository;
 import tech.cassandre.trading.bot.repository.OrderRepository;
@@ -111,6 +107,9 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
     /** Ticker flux. */
     private final TickerFlux tickerFlux;
 
+    /** Candle flux. */
+    private final CandlePeriodFlux candlePeriodFlux;
+
     /** Ticker Stream flux. */
     private final TickerStreamFlux tickerStreamFlux;
 
@@ -160,6 +159,7 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
         final ConnectableFlux<Set<PositionDTO>> connectablePositionFlux = positionFlux.getFlux().publish();
         final ConnectableFlux<Set<OrderDTO>> connectableOrderFlux = orderFlux.getFlux().publish();
         final ConnectableFlux<Set<TradeDTO>> connectableTradeFlux = tradeFlux.getFlux().publish();
+        final ConnectableFlux<Set<CandleStickDO>> connectableCandleFlux = candlePeriodFlux.getFlux().publish();
         final ConnectableFlux<Set<TickerDTO>> connectableTickerFlux;
         if (exchangeParameters.isTickerStreamEnabled()) {
             connectableTickerFlux = tickerStreamFlux.getFlux().publish();
@@ -222,6 +222,7 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
                     connectableOrderFlux.subscribe(strategy::ordersUpdates, throwable -> logger.error("OrdersUpdates failing: {}", throwable.getMessage()));
                     connectableTradeFlux.subscribe(strategy::tradesUpdates, throwable -> logger.error("TradesUpdates failing: {}", throwable.getMessage()));
                     connectableTickerFlux.subscribe(strategy::tickersUpdates, throwable -> logger.error("TickersUpdates failing: {}", throwable.getMessage()));
+                    connectableCandleFlux.subscribe(strategy::candlesUpdates, throwable -> logger.error("CandlesUpdates failing: {}", throwable.getMessage()));
                 });
 
         // =============================================================================================================
@@ -231,6 +232,7 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
         connectableOrderFlux.connect();
         connectableTradeFlux.connect();
         connectableTickerFlux.connect();
+        connectableCandleFlux.connect();
     }
 
     /**

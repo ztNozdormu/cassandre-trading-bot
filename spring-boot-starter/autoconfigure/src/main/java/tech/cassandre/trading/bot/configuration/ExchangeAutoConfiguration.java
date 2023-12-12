@@ -16,12 +16,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.DependsOn;
-import tech.cassandre.trading.bot.batch.AccountFlux;
-import tech.cassandre.trading.bot.batch.OrderFlux;
-import tech.cassandre.trading.bot.batch.PositionFlux;
-import tech.cassandre.trading.bot.batch.TickerFlux;
-import tech.cassandre.trading.bot.batch.TickerStreamFlux;
-import tech.cassandre.trading.bot.batch.TradeFlux;
+import si.mazi.rescu.RestProxyFactory;
+import tech.cassandre.trading.bot.batch.*;
 import tech.cassandre.trading.bot.repository.OrderRepository;
 import tech.cassandre.trading.bot.repository.PositionRepository;
 import tech.cassandre.trading.bot.repository.TradeRepository;
@@ -35,6 +31,9 @@ import tech.cassandre.trading.bot.service.TradeService;
 import tech.cassandre.trading.bot.service.TradeServiceXChangeImplementation;
 import tech.cassandre.trading.bot.service.UserService;
 import tech.cassandre.trading.bot.service.UserServiceXChangeImplementation;
+import tech.cassandre.trading.bot.service.web3Server.Web3Server;
+import tech.cassandre.trading.bot.service.web3Server.Web3ServerHistoryDataService;
+import tech.cassandre.trading.bot.service.web3Server.Web3ServerHistoryDataServiceImpl;
 import tech.cassandre.trading.bot.strategy.CassandreStrategy;
 import tech.cassandre.trading.bot.strategy.internal.CassandreStrategyInterface;
 import tech.cassandre.trading.bot.util.base.configuration.BaseConfiguration;
@@ -92,6 +91,9 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
     /** Market service. */
     private MarketService marketService;
 
+    /** Web3Server service. */
+    private Web3ServerHistoryDataService web3ServerHistoryDataService;
+
     /** Trade service. */
     private TradeService tradeService;
 
@@ -103,6 +105,9 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
 
     /** Ticker flux. */
     private TickerFlux tickerFlux;
+
+    /** Candle flux. */
+    private final CandlePeriodFlux candlePeriodFlux;
 
     /** Ticker stream flux. */
     private TickerStreamFlux tickerStreamFlux;
@@ -310,6 +315,16 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
     }
 
     /**
+     * Getter for web3ServerHistoryDataService.
+     *
+     * @return web3ServerHistoryDataService
+     */
+    @Bean("web3ServerMarketDataService")
+    public Web3ServerHistoryDataService getWeb3ServerMarketDataService(){
+        Web3Server web3Server = RestProxyFactory.createProxy(Web3Server.class, "http://localhost:19001/");
+        return new Web3ServerHistoryDataServiceImpl(web3Server);
+    }
+    /**
      * Getter for tradeService.
      *
      * @return tradeService
@@ -352,6 +367,17 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
             tickerFlux = new TickerFlux(applicationContext, getMarketService());
         }
         return tickerFlux;
+    }
+
+    /**
+     * Getter for candleFlux.
+     *
+     * @return candleFlux
+     */
+    @Bean
+    @DependsOn("getWeb3ServerMarketDataService")
+    public CandlePeriodFlux getCandlePeriodFlux() {
+        return new CandlePeriodFlux(applicationContext, getWeb3ServerMarketDataService());
     }
 
     /**
