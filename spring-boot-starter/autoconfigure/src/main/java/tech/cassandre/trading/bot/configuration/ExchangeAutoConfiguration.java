@@ -111,7 +111,7 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
     private TickerFlux tickerFlux;
 
     /** Candle flux. */
-    private final CandlePeriodFlux candlePeriodFlux;
+    private CandlePeriodFlux candlePeriodFlux;
 
     /** Ticker stream flux. */
     private TickerStreamFlux tickerStreamFlux;
@@ -327,7 +327,8 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
     public Web3ServerMarketDataService getWeb3ServerMarketDataService() {
         ExchangeSpecification exSpec = new ExchangeSpecification(Web3ServerExchange.class);
         Exchange web3ServerExchange = ExchangeFactory.INSTANCE.createExchange(exSpec);
-        return (Web3ServerMarketDataService) web3ServerExchange.getMarketDataService();
+        web3ServerMarketDataService = (Web3ServerMarketDataService) web3ServerExchange.getMarketDataService();
+        return web3ServerMarketDataService;
     }
     /**
      * Getter for tradeService.
@@ -380,9 +381,10 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
      * @return candleFlux
      */
     @Bean
-    @DependsOn("getWeb3ServerMarketDataService")
+    @DependsOn("web3ServerMarketDataService")
     public CandlePeriodFlux getCandlePeriodFlux() {
-        return new CandlePeriodFlux(applicationContext, getWeb3ServerMarketDataService());
+        candlePeriodFlux = new CandlePeriodFlux(applicationContext, getWeb3ServerMarketDataService());
+        return candlePeriodFlux;
     }
 
     /**
