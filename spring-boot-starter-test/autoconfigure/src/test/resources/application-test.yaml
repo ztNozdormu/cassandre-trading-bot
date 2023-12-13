@@ -3,9 +3,9 @@ spring:
   # 数据源配置项
   datasource:
     #driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/cassandre-database?allowMultiQueries=true&useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&nullCatalogMeansCurrent=true # MySQL Connector/J 8.X 连接的示例
+    url: jdbc:mysql://192.168.1.100:3306/cassandre-database?allowMultiQueries=true&useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&nullCatalogMeansCurrent=true # MySQL Connector/J 8.X 连接的示例
     username: root
-    password: 123456
+    password: root
   jpa:
     show-sql: true
     database-platform: org.hibernate.dialect.MySQL55Dialect
