@@ -23,6 +23,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * - One calling account flux.
  * - One calling ticker flux.
  * - One calling order and trade flux.
+ *
  */
 @Profile("!schedule-disabled")
 @Configuration
