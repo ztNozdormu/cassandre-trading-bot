@@ -128,12 +128,16 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
     /** Position flux. */
     private final PositionFlux positionFlux;
 
+    /** DynamicSchedule flux. */
+    private final DynamicSchedule dynamicSchedule;
+
     /**
      * Search for strategies and runs them.
      */
     @PostConstruct
     @SuppressWarnings("checkstyle:MethodLength")
     public void configure() {
+
         // Retrieving all the beans have the @Strategy annotation.
         final Map<String, Object> strategies = applicationContext.getBeansWithAnnotation(CassandreStrategy.class);
 

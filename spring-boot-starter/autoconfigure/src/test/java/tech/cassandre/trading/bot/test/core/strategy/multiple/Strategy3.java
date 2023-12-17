@@ -3,6 +3,7 @@ package tech.cassandre.trading.bot.test.core.strategy.multiple;
 import lombok.Getter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
+import tech.cassandre.trading.bot.schedule.TaskManager;
 import tech.cassandre.trading.bot.strategy.CassandreStrategy;
 
 import java.util.Set;
@@ -32,6 +33,11 @@ public class Strategy3 extends Strategy {
     @Override
     public final Set<CurrencyPairDTO> getRequestedCurrencyPairs() {
         return Stream.of(BTC_USDT, ETH_USDT).collect(Collectors.toSet());
+    }
+
+    @Override
+    public TaskManager getTaskManager() {
+        return null;
     }
 
 }

@@ -3,6 +3,7 @@ package tech.cassandre.trading.bot.test.util.strategies;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
+import tech.cassandre.trading.bot.schedule.TaskManager;
 import tech.cassandre.trading.bot.strategy.BasicCassandreStrategy;
 import tech.cassandre.trading.bot.strategy.CassandreStrategy;
 
@@ -38,6 +39,11 @@ public class NoTradingAccountStrategy extends BasicCassandreStrategy {
     @Override
     public Optional<AccountDTO> getTradeAccount(Set<AccountDTO> accounts) {
         return Optional.empty();
+    }
+
+    @Override
+    public TaskManager getTaskManager() {
+        return null;
     }
 
 }

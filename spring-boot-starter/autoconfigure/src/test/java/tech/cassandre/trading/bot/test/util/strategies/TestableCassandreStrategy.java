@@ -11,20 +11,17 @@ import tech.cassandre.trading.bot.dto.trade.OrderDTO;
 import tech.cassandre.trading.bot.dto.trade.TradeDTO;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
+import tech.cassandre.trading.bot.schedule.CurrencyPeriod;
+import tech.cassandre.trading.bot.schedule.Task;
+import tech.cassandre.trading.bot.schedule.TaskManager;
 import tech.cassandre.trading.bot.strategy.BasicCassandreStrategy;
 import tech.cassandre.trading.bot.strategy.CassandreStrategy;
 
 import java.time.Duration;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static tech.cassandre.trading.bot.test.util.junit.BaseTest.ETH_BTC;
-import static tech.cassandre.trading.bot.test.util.junit.BaseTest.ETH_USDT;
+import static tech.cassandre.trading.bot.test.util.junit.BaseTest.*;
 import static tech.cassandre.trading.bot.test.util.strategies.TestableCassandreStrategy.PARAMETER_TESTABLE_STRATEGY_ENABLED;
 
 /**
@@ -69,6 +66,15 @@ public class TestableCassandreStrategy extends BasicCassandreStrategy {
 
     /** Requested currency pairs. */
     Set<CurrencyPairDTO> requestedCurrencyPairs = ConcurrentHashMap.newKeySet();
+    /**
+     * 交易对数据周期信息
+     */
+    public Set<CurrencyPeriod> requestedCurrencyPairPeriods = ConcurrentHashMap.newKeySet();
+
+    /**
+     * 任务集合.CurrencyPeriod->Task
+     */
+    public final Set<CurrencyPeriod> currencyPeriods=  ConcurrentHashMap.newKeySet();
 
     /** Initialize flag. */
     private boolean initialized = false;
@@ -77,8 +83,15 @@ public class TestableCassandreStrategy extends BasicCassandreStrategy {
      * Constructor.
      */
     public TestableCassandreStrategy() {
+        // 不需要自定义数据周期的币种.
         requestedCurrencyPairs.add(ETH_BTC);
         requestedCurrencyPairs.add(ETH_USDT);
+        // 需要自定义数据周期的币种.
+        CurrencyPeriod ETH_BTC_15000 = new CurrencyPeriod(BTC_USDT,15000);
+        requestedCurrencyPairPeriods.add(ETH_BTC_15000);
+        requestedCurrencyPairPeriods.forEach(currencyPeriod -> {
+            requestedCurrencyPairs.add(currencyPeriod.getCurrencyPairDTO());
+        });
     }
 
     @Override
@@ -86,6 +99,10 @@ public class TestableCassandreStrategy extends BasicCassandreStrategy {
         return requestedCurrencyPairs;
     }
 
+    @Override
+    public TaskManager getTaskManager() {
+        return new TaskManager(currencyPeriods);
+    }
     /**
      * Updates the requested currency pairs.
      *
@@ -190,6 +207,7 @@ public class TestableCassandreStrategy extends BasicCassandreStrategy {
 
         Thread.sleep(MINIMUM_METHOD_DURATION.toMillis());
     }
+
 
     /**
      * Return formatted list count.

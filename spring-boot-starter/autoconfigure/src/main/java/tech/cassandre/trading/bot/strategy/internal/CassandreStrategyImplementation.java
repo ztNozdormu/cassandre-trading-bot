@@ -10,6 +10,7 @@ import tech.cassandre.trading.bot.dto.trade.TradeDTO;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
 import tech.cassandre.trading.bot.dto.web3.CandleStickDTO;
+import tech.cassandre.trading.bot.schedule.TaskManager;
 import tech.cassandre.trading.bot.strategy.BasicCassandreStrategy;
 import tech.cassandre.trading.bot.util.base.strategy.BaseStrategy;
 
@@ -275,5 +276,14 @@ public abstract class CassandreStrategyImplementation extends BaseStrategy imple
                 .peek(positionDTO -> logger.debug("Position {} updated with trade {}", positionDTO.getPositionId(), tradeDTO))
                 .forEach(dependencies.getPositionFlux()::emitValue));
     }
-
+    /**
+     * Get default TaskManager.
+     *
+     * @param TaskManager
+     */
+    @Override
+    public TaskManager getTaskManager() {
+        // 实现默认任务 TODO
+        return null;
+    }
 }

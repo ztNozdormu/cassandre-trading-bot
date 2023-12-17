@@ -7,6 +7,7 @@ import tech.cassandre.trading.bot.dto.trade.TradeDTO;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
 import tech.cassandre.trading.bot.dto.web3.CandleStickDTO;
+import tech.cassandre.trading.bot.schedule.TaskManager;
 import tech.cassandre.trading.bot.strategy.BasicCassandreStrategy;
 
 import java.math.BigDecimal;
@@ -216,4 +217,11 @@ public interface CassandreStrategyInterface {
     default void initIndicators() {
 
     }
+
+    /**
+     * Implements this method to tell the bot some currency pairs tasks your strategy will execute.
+     *
+     * @return the TaskManager your want to execute in this strategy
+     */
+    TaskManager getTaskManager();
 }

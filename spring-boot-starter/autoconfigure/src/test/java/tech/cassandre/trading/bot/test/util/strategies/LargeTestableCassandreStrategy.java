@@ -11,6 +11,7 @@ import tech.cassandre.trading.bot.dto.trade.OrderDTO;
 import tech.cassandre.trading.bot.dto.trade.TradeDTO;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
+import tech.cassandre.trading.bot.schedule.TaskManager;
 import tech.cassandre.trading.bot.strategy.BasicCassandreStrategy;
 import tech.cassandre.trading.bot.strategy.CassandreStrategy;
 
@@ -171,6 +172,11 @@ public class LargeTestableCassandreStrategy extends BasicCassandreStrategy {
                 .forEach(positionsStatusUpdatesReceived::add);
 
         Thread.sleep(MINIMUM_METHOD_DURATION.toMillis());
+    }
+
+    @Override
+    public TaskManager getTaskManager() {
+        return null;
     }
 
     /**
