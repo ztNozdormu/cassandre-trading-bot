@@ -4,18 +4,21 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.Trigger;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.CronTrigger;
-import org.springframework.stereotype.Component;
 import tech.cassandre.trading.bot.schedule.TaskManager;
 
-//@Configuration
-@Component
-//@EnableScheduling
+import javax.annotation.Resource;
+
+@Configuration
+//@Component
+@EnableScheduling
 @Slf4j
 @RequiredArgsConstructor
 @Setter
@@ -29,10 +32,11 @@ public class DynamicSchedule implements SchedulingConfigurer {
     /**
      * 任务管理器.
      */
-    public  TaskManager taskManager;
+    @Resource
+    private TaskManager taskManager;
 
     @Override
-    public void configureTasks(ScheduledTaskRegistrar scheduledTaskRegistrar) {
+    public void configureTasks(final ScheduledTaskRegistrar scheduledTaskRegistrar) {
         taskManager.getDefaultTask().forEach((task)-> {
             //任务执行线程
             Runnable runnable = task.getTaskHandle()::execute;
@@ -47,6 +51,10 @@ public class DynamicSchedule implements SchedulingConfigurer {
         });
     }
 
+    /**
+     * 任務線程池.
+     * @return
+     */
     @Bean
     public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();

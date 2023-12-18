@@ -278,12 +278,10 @@ public abstract class CassandreStrategyImplementation extends BaseStrategy imple
     }
     /**
      * Get default TaskManager.
-     *
-     * @param TaskManager
      */
     @Override
     public TaskManager getTaskManager() {
-        // 实现默认任务 TODO
-        return null;
+        // 实现默认任务
+        return new TaskManager();
     }
 }

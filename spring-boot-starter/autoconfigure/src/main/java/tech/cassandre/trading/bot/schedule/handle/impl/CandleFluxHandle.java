@@ -29,7 +29,7 @@ public class CandleFluxHandle implements TaskHandle {
     @Override
     public void execute() {
         if (enabled.get() && candlePeriodFlux != null) {
-            candlePeriodFlux.currencyPeriod = currencyPeriod;
+            CandlePeriodFlux.currencyPeriod = currencyPeriod;
             candlePeriodFlux.update();
         }
     }

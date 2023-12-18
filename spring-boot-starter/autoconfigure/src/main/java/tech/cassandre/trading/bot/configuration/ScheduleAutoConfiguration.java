@@ -23,7 +23,7 @@
 // * - One calling account flux.
 // * - One calling ticker flux.
 // * - One calling order and trade flux.
-// *
+// * tech.cassandre.trading.bot.configuration.ScheduleAutoConfiguration,
 // */
 //@Profile("!schedule-disabled")
 //@Configuration

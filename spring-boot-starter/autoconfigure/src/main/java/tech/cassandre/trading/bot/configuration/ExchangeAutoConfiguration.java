@@ -28,6 +28,10 @@ import tech.cassandre.trading.bot.batch.PositionFlux;
 import tech.cassandre.trading.bot.repository.OrderRepository;
 import tech.cassandre.trading.bot.repository.PositionRepository;
 import tech.cassandre.trading.bot.repository.TradeRepository;
+import tech.cassandre.trading.bot.schedule.handle.impl.AccountFluxHandle;
+import tech.cassandre.trading.bot.schedule.handle.impl.CandleFluxHandle;
+import tech.cassandre.trading.bot.schedule.handle.impl.TickerFluxHandle;
+import tech.cassandre.trading.bot.schedule.handle.impl.TradeOrderFluxHandle;
 import tech.cassandre.trading.bot.service.ExchangeService;
 import tech.cassandre.trading.bot.service.ExchangeServiceXChangeImplementation;
 import tech.cassandre.trading.bot.service.MarketService;
@@ -124,6 +128,15 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
 
     /** Position flux. */
     private PositionFlux positionFlux;
+
+    /** Position flux. */
+    private static AccountFluxHandle accountFluxHandle;
+    /** Position flux. */
+    private static TickerFluxHandle tickerFluxHandle;
+    /** Position flux. */
+    private static TradeOrderFluxHandle tradeOrderFluxHandle;
+    /** Position flux. */
+    private static CandleFluxHandle candleFluxHandle;
 
     /**
      * Instantiating the exchange services based on user parameters.
@@ -454,6 +467,58 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
             positionService = new PositionServiceCassandreImplementation(positionRepository, getTradeService(), positionFlux);
         }
         return positionService;
+    }
+
+    /**
+     * getAccountFlux
+     * @return AccountFluxHandle
+     */
+    @Bean
+    @DependsOn("getAccountFlux")
+    public AccountFluxHandle getAccountFluxHandle() {
+        if (accountFluxHandle == null) {
+            accountFluxHandle = new AccountFluxHandle(accountFlux);
+        }
+        return accountFluxHandle;
+    }
+
+    /**
+     * getTickerFlux.
+     * @return TickerFluxHandle
+     */
+    @Bean
+    @DependsOn("getTickerFlux")
+    public TickerFluxHandle getTickerFluxHandle() {
+        if (tickerFluxHandle == null) {
+            tickerFluxHandle = new TickerFluxHandle(tickerFlux);
+        }
+        return tickerFluxHandle;
+    }
+
+    /**
+     * getTradeOrderFluxHandle.
+     * @return TradeOrderFluxHandle
+     */
+    @Bean
+    @DependsOn({"getOrderFlux","getTradeFlux"})
+    public TradeOrderFluxHandle getTradeOrderFluxHandle() {
+        if (tradeOrderFluxHandle == null) {
+            tradeOrderFluxHandle = new TradeOrderFluxHandle(orderFlux,tradeFlux);
+        }
+        return tradeOrderFluxHandle;
+    }
+
+    /**
+     * getCandlePeriodFlux.
+     * @return CandleFluxHandle
+     */
+    @Bean
+    @DependsOn("getCandlePeriodFlux")
+    public CandleFluxHandle getCandleFluxHandle() {
+        if (candleFluxHandle == null) {
+            candleFluxHandle = new CandleFluxHandle(candlePeriodFlux);
+        }
+        return candleFluxHandle;
     }
 
 }

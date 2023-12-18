@@ -2,7 +2,6 @@ package tech.cassandre.trading.bot.batch;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.time.DateUtils;
-import org.knowm.xchange.currency.CurrencyPair;
 import org.knowm.xchange.web3Server.dto.web3.CandleStickDO;
 import org.knowm.xchange.web3Server.service.Web3ServerMarketDataService;
 import org.knowm.xchange.web3Server.service.params.MkCandleStickDTO;
@@ -15,8 +14,11 @@ import tech.cassandre.trading.bot.strategy.CassandreStrategy;
 import tech.cassandre.trading.bot.strategy.internal.CassandreStrategyInterface;
 import tech.cassandre.trading.bot.util.base.batch.BaseFlux;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.Date;
+import java.util.Objects;
+import java.util.Set;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.stream.Collectors;
 
 /**
@@ -37,7 +39,7 @@ public class CandlePeriodFlux extends BaseFlux<CandleStickDTO> {
     /** 默认查询时间. */
     private static final int  S_TIME = -60;
     /** 当前任务执行时的 标的,周期信息. */
-    public static CurrencyPeriod currencyPeriod;
+    private static CurrencyPeriod currencyPeriod;
 
     @Override
     protected final Set<CandleStickDTO> getNewValues() {

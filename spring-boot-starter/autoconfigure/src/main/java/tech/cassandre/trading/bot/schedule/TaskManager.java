@@ -2,6 +2,7 @@ package tech.cassandre.trading.bot.schedule;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import tech.cassandre.trading.bot.schedule.handle.impl.AccountFluxHandle;
 import tech.cassandre.trading.bot.schedule.handle.impl.CandleFluxHandle;
 import tech.cassandre.trading.bot.schedule.handle.impl.TickerFluxHandle;
@@ -16,16 +17,19 @@ import java.util.concurrent.ConcurrentHashMap;
  * 任务管理器.
  */
 @Data
+@Component
 @RequiredArgsConstructor
 public class TaskManager {
-
+    @Resource
     private  AccountFluxHandle accountFluxHandle;
+    @Resource
+    private  TickerFluxHandle tickerFluxHandle;
 
-    private TickerFluxHandle tickerFluxHandle;
+    @Resource
+    private  TradeOrderFluxHandle tradeOrderFluxHandle;
 
-    private TradeOrderFluxHandle tradeOrderFluxHandle;
-
-    private CandleFluxHandle candleFluxHandle;
+    @Resource
+    private  CandleFluxHandle candleFluxHandle;
 
     /**
      * 动态任务集合.CurrencyPeriod->Task.
@@ -49,9 +53,9 @@ public class TaskManager {
      * @return
      */
     public Set<Task> getDefaultTask(){
-        defaultTask.add(new Task(1,"AccountFluxHandle","默认每一秒执行",accountFluxHandle));
-        defaultTask.add(new Task(2,"TickerFluxHandle","默认每一秒执行",tickerFluxHandle));
-        defaultTask.add(new Task(3,"TradeOrderFluxHandle","默认每一秒执行",candleFluxHandle));
+        defaultTask.add(new Task(1,"AccountFluxHandle","0/1 * * * * ?",accountFluxHandle));
+        defaultTask.add(new Task(2,"TickerFluxHandle","0/1 * * * * ?",tickerFluxHandle));
+        defaultTask.add(new Task(3,"TradeOrderFluxHandle","0/1 * * * * ?",candleFluxHandle));
         // 周期与cron之间的转化函数 TODO
         currencyPeriods.forEach(currencyPeriod->{
             candleFluxHandle.currencyPeriod = currencyPeriod;
