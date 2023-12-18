@@ -1,5 +1,6 @@
 package tech.cassandre.trading.bot.configuration;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -17,12 +18,12 @@ import tech.cassandre.trading.bot.schedule.TaskManager;
 import javax.annotation.Resource;
 
 @Configuration
-//@Component
 @EnableScheduling
 @Slf4j
 @RequiredArgsConstructor
 @Setter
-public class DynamicSchedule implements SchedulingConfigurer {
+@Getter
+public class DynamicScheduleAutoConfiguration implements SchedulingConfigurer {
 
     /** Scheduler pool size. */
     private static final int SCHEDULER_POOL_SIZE = 6;

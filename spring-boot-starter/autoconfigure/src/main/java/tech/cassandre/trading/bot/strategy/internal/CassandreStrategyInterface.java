@@ -7,7 +7,7 @@ import tech.cassandre.trading.bot.dto.trade.TradeDTO;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
 import tech.cassandre.trading.bot.dto.web3.CandleStickDTO;
-import tech.cassandre.trading.bot.schedule.TaskManager;
+import tech.cassandre.trading.bot.schedule.CurrencyPeriod;
 import tech.cassandre.trading.bot.strategy.BasicCassandreStrategy;
 
 import java.math.BigDecimal;
@@ -63,6 +63,13 @@ public interface CassandreStrategyInterface {
      * @return the list of currency pairs tickers your want to receive in this strategy
      */
     Set<CurrencyPairDTO> getRequestedCurrencyPairs();
+
+    /**
+     * Implements this method to tell the bot which currency pairs and period your strategy will receive.
+     *
+     * @return the list of currency pairs period your want to receive in this strategy
+     */
+    Set<CurrencyPeriod> getRequestedCurrencyPairPeriods();
 
     /**
      * Implements this method to tell the bot which account from the accounts you own is the one you use for trading.
@@ -211,17 +218,4 @@ public interface CassandreStrategyInterface {
      */
     BigDecimal getLastPriceForCurrencyPair(CurrencyPairDTO currencyPair);
 
-    /**
-     * 指标初始化 这里进行指标计算处理.
-     */
-    default void initIndicators() {
-
-    }
-
-    /**
-     * Implements this method to tell the bot some currency pairs tasks your strategy will execute.
-     *
-     * @return the TaskManager your want to execute in this strategy
-     */
-    TaskManager getTaskManager();
 }

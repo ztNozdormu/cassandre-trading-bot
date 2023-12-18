@@ -66,15 +66,7 @@ public class TestableCassandreStrategy extends BasicCassandreStrategy {
 
     /** Requested currency pairs. */
     Set<CurrencyPairDTO> requestedCurrencyPairs = ConcurrentHashMap.newKeySet();
-    /**
-     * 交易对数据周期信息
-     */
-    public Set<CurrencyPeriod> requestedCurrencyPairPeriods = ConcurrentHashMap.newKeySet();
 
-    /**
-     * 任务集合.CurrencyPeriod->Task
-     */
-    public final Set<CurrencyPeriod> currencyPeriods=  ConcurrentHashMap.newKeySet();
 
     /** Initialize flag. */
     private boolean initialized = false;
@@ -83,10 +75,10 @@ public class TestableCassandreStrategy extends BasicCassandreStrategy {
      * Constructor.
      */
     public TestableCassandreStrategy() {
-        // 不需要自定义数据周期的币种.
+        // 不需要自定义数据周期的币种 默认获取分钟tikers数据.
         requestedCurrencyPairs.add(ETH_BTC);
         requestedCurrencyPairs.add(ETH_USDT);
-        // 需要自定义数据周期的币种.
+        // 需要自定义数据周期的币种需要自定义周期数据才扩展增加不需要下面代码可以去掉.
         CurrencyPeriod ETH_BTC_15000 = new CurrencyPeriod(BTC_USDT,15000);
         requestedCurrencyPairPeriods.add(ETH_BTC_15000);
         requestedCurrencyPairPeriods.forEach(currencyPeriod -> {
@@ -99,10 +91,7 @@ public class TestableCassandreStrategy extends BasicCassandreStrategy {
         return requestedCurrencyPairs;
     }
 
-    @Override
-    public TaskManager getTaskManager() {
-        return new TaskManager(currencyPeriods);
-    }
+
     /**
      * Updates the requested currency pairs.
      *

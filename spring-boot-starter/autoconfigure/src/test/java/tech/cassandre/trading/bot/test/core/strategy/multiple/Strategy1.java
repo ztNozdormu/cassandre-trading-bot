@@ -33,9 +33,4 @@ public class Strategy1 extends Strategy {
         return Collections.singleton(BTC_USDT);
     }
 
-    @Override
-    public TaskManager getTaskManager() {
-        return null;
-    }
-
 }

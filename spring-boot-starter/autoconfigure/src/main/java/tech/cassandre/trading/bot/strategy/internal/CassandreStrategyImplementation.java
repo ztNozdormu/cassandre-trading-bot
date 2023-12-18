@@ -10,7 +10,7 @@ import tech.cassandre.trading.bot.dto.trade.TradeDTO;
 import tech.cassandre.trading.bot.dto.user.AccountDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
 import tech.cassandre.trading.bot.dto.web3.CandleStickDTO;
-import tech.cassandre.trading.bot.schedule.TaskManager;
+import tech.cassandre.trading.bot.schedule.CurrencyPeriod;
 import tech.cassandre.trading.bot.strategy.BasicCassandreStrategy;
 import tech.cassandre.trading.bot.util.base.strategy.BaseStrategy;
 
@@ -20,6 +20,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -57,7 +58,10 @@ public abstract class CassandreStrategyImplementation extends BaseStrategy imple
 
     /** Positions previous status - used for onPositionsStatusUpdates() - Internal use only. */
     private final Map<Long, PositionStatusDTO> previousPositionsStatus = new LinkedHashMap<>();
-
+    /**
+     * 交易对数据周期信息.
+     */
+    private Set<CurrencyPeriod> requestedCurrencyPairPeriods = ConcurrentHashMap.newKeySet();
     // =================================================================================================================
     // Configuration & dependencies set by Cassandre.
 
@@ -276,12 +280,8 @@ public abstract class CassandreStrategyImplementation extends BaseStrategy imple
                 .peek(positionDTO -> logger.debug("Position {} updated with trade {}", positionDTO.getPositionId(), tradeDTO))
                 .forEach(dependencies.getPositionFlux()::emitValue));
     }
-    /**
-     * Get default TaskManager.
-     */
     @Override
-    public TaskManager getTaskManager() {
-        // 实现默认任务
-        return new TaskManager();
+    public final Set<CurrencyPeriod> getRequestedCurrencyPairPeriods() {
+        return requestedCurrencyPairPeriods;
     }
 }

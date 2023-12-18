@@ -42,40 +42,35 @@ public class TaskManager {
     private  CandleFluxHandle candleFluxHandle;
 
     /**
-     * 动态任务集合.CurrencyPeriod-> Task.
-     */
-    private Set<CurrencyPeriod> currencyPeriods = ConcurrentHashMap.newKeySet();
-    /**
      * 默认任务集合.
      */
-    private  Set<Task> defaultTask = ConcurrentHashMap.newKeySet();
+    private  Set<Task> taskSet = ConcurrentHashMap.newKeySet();
     /**
      * 默认任务起始索引.
      */
     private static final int DEFAULT_INDEX = 1;
-//   /**
-//     * Constructor.
-//     */
-//    public TaskManager(Set<CurrencyPeriod> currencyPeriods) {
-//        this.currencyPeriods = currencyPeriods;
-//    }
 
     /**
      * getDefaultTask().
      * @return Set<Task>
      */
     public Set<Task> getDefaultTask() {
-        defaultTask.add(new Task(DEFAULT_INDEX, "AccountFluxHandle", "0/1 * * * * ?", accountFluxHandle));
-        defaultTask.add(new Task(DEFAULT_INDEX + 1, "TickerFluxHandle", "0/1 * * * * ?", tickerFluxHandle));
-        defaultTask.add(new Task(DEFAULT_INDEX + 2, "TradeOrderFluxHandle", "0/1 * * * * ?", tradeOrderFluxHandle));
+        taskSet.add(new Task(DEFAULT_INDEX, "AccountFluxHandle", "0/1 * * * * ?", accountFluxHandle));
+        taskSet.add(new Task(DEFAULT_INDEX + 1, "TickerFluxHandle", "0/1 * * * * ?", tickerFluxHandle));
+        taskSet.add(new Task(DEFAULT_INDEX + 2, "TradeOrderFluxHandle", "0/1 * * * * ?", tradeOrderFluxHandle));
+        return taskSet;
+    }
+
+    /**
+     * 添加动态任务.
+     * @param currencyPeriods
+     */
+    public void addDynamicTask(final Set<CurrencyPeriod> currencyPeriods) {
         // 周期与cron之间的转化函数 TODO
         currencyPeriods.forEach(currencyPeriod-> {
             candleFluxHandle.setCurrencyPeriod(currencyPeriod);
-            defaultTask.add(new Task(defaultTask.size() + 1, currencyPeriod.getClass().getName(), "根据周期获取", candleFluxHandle));
+            taskSet.add(new Task(taskSet.size() + 1, currencyPeriod.getClass().getName(), "根据周期获取", candleFluxHandle));
         });
-
-
-        return defaultTask;
     }
 
 }

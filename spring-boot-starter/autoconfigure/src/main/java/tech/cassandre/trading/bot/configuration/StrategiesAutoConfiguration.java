@@ -129,7 +129,7 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
     private final PositionFlux positionFlux;
 
     /** DynamicSchedule flux. */
-    private final DynamicSchedule dynamicSchedule;
+    private final DynamicScheduleAutoConfiguration dynamicScheduleAutoConfiguration;
 
     /**
      * Search for strategies and runs them.
@@ -185,6 +185,8 @@ public class StrategiesAutoConfiguration extends BaseConfiguration {
                 .forEach(s -> {
                     CassandreStrategyInterface strategy = (CassandreStrategyInterface) s;
                     CassandreStrategy annotation = s.getClass().getAnnotation(CassandreStrategy.class);
+                    // 动态配置策略任务.
+                    dynamicScheduleAutoConfiguration.getTaskManager().addDynamicTask(strategy.getRequestedCurrencyPairPeriods());
 
                     // Retrieving strategy information from annotation.
                     final String strategyId = annotation.strategyId();
