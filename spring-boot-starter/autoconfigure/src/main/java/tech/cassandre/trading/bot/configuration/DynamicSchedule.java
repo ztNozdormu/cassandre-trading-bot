@@ -35,6 +35,10 @@ public class DynamicSchedule implements SchedulingConfigurer {
     @Resource
     private TaskManager taskManager;
 
+    /**
+     * 任务配置.
+     * @param scheduledTaskRegistrar
+     */
     @Override
     public void configureTasks(final ScheduledTaskRegistrar scheduledTaskRegistrar) {
         taskManager.getDefaultTask().forEach((task)-> {
@@ -53,7 +57,7 @@ public class DynamicSchedule implements SchedulingConfigurer {
 
     /**
      * 任務線程池.
-     * @return
+     * @return TaskScheduler
      */
     @Bean
     public TaskScheduler taskScheduler() {

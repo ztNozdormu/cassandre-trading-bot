@@ -19,6 +19,10 @@ public class TickerFluxHandle implements TaskHandle {
     private final AtomicBoolean enabled = new AtomicBoolean(true);
     /** Ticker flux. */
     private final TickerFlux tickerFlux;
+
+    /**
+     * 任务执行函数.
+     */
     @Override
     public void execute() {
         if (enabled.get() && tickerFlux != null) {

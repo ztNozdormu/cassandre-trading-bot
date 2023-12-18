@@ -1,20 +1,22 @@
 package tech.cassandre.trading.bot.schedule.handle.impl;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 import org.springframework.stereotype.Component;
 import tech.cassandre.trading.bot.batch.CandlePeriodFlux;
 import tech.cassandre.trading.bot.schedule.CurrencyPeriod;
 import tech.cassandre.trading.bot.schedule.handle.TaskHandle;
 
 import javax.annotation.PreDestroy;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * tiker Flux执行器.
  */
 @Component
+@Setter
+@Getter
 @RequiredArgsConstructor
 public class CandleFluxHandle implements TaskHandle {
 
@@ -24,12 +26,14 @@ public class CandleFluxHandle implements TaskHandle {
     private final CandlePeriodFlux candlePeriodFlux;
 
     /** 当前任务执行时的 标的,周期信息. */
-    public static CurrencyPeriod currencyPeriod;
-
+    private CurrencyPeriod currencyPeriod;
+    /**
+     * 任务执行函数.
+     */
     @Override
     public void execute() {
         if (enabled.get() && candlePeriodFlux != null) {
-            CandlePeriodFlux.currencyPeriod = currencyPeriod;
+            candlePeriodFlux.setCurrencyPeriod(currencyPeriod);
             candlePeriodFlux.update();
         }
     }

@@ -20,47 +20,60 @@ import java.util.concurrent.ConcurrentHashMap;
 @Component
 @RequiredArgsConstructor
 public class TaskManager {
+    /**
+     * accountFluxHandle对象注入.
+     */
     @Resource
     private  AccountFluxHandle accountFluxHandle;
+    /**
+     * tickerFluxHandle对象注入.
+     */
     @Resource
     private  TickerFluxHandle tickerFluxHandle;
-
+    /**
+     * tradeOrderFluxHandle对象注入.
+     */
     @Resource
     private  TradeOrderFluxHandle tradeOrderFluxHandle;
-
+    /**
+     * candleFluxHandle对象注入.
+     */
     @Resource
     private  CandleFluxHandle candleFluxHandle;
 
     /**
-     * 动态任务集合.CurrencyPeriod->Task.
+     * 动态任务集合.CurrencyPeriod-> Task.
      */
     private Set<CurrencyPeriod> currencyPeriods = ConcurrentHashMap.newKeySet();
     /**
      * 默认任务集合.
      */
     private  Set<Task> defaultTask = ConcurrentHashMap.newKeySet();
-
     /**
-     * Constructor.
-     * @param currencyPeriods
+     * 默认任务起始索引.
      */
-    public TaskManager(Set<CurrencyPeriod> currencyPeriods) {
-        this.currencyPeriods = currencyPeriods;
-    }
+    private static final int DEFAULT_INDEX = 1;
+//   /**
+//     * Constructor.
+//     */
+//    public TaskManager(Set<CurrencyPeriod> currencyPeriods) {
+//        this.currencyPeriods = currencyPeriods;
+//    }
 
     /**
      * getDefaultTask().
-     * @return
+     * @return Set<Task>
      */
-    public Set<Task> getDefaultTask(){
-        defaultTask.add(new Task(1,"AccountFluxHandle","0/1 * * * * ?",accountFluxHandle));
-        defaultTask.add(new Task(2,"TickerFluxHandle","0/1 * * * * ?",tickerFluxHandle));
-        defaultTask.add(new Task(3,"TradeOrderFluxHandle","0/1 * * * * ?",candleFluxHandle));
+    public Set<Task> getDefaultTask() {
+        defaultTask.add(new Task(DEFAULT_INDEX, "AccountFluxHandle", "0/1 * * * * ?", accountFluxHandle));
+        defaultTask.add(new Task(DEFAULT_INDEX + 1, "TickerFluxHandle", "0/1 * * * * ?", tickerFluxHandle));
+        defaultTask.add(new Task(DEFAULT_INDEX + 2, "TradeOrderFluxHandle", "0/1 * * * * ?", tradeOrderFluxHandle));
         // 周期与cron之间的转化函数 TODO
-        currencyPeriods.forEach(currencyPeriod->{
-            candleFluxHandle.currencyPeriod = currencyPeriod;
-            defaultTask.add(new Task(defaultTask.size()+1,currencyPeriod.getClass().getName(),"根据周期获取",candleFluxHandle));
+        currencyPeriods.forEach(currencyPeriod-> {
+            candleFluxHandle.setCurrencyPeriod(currencyPeriod);
+            defaultTask.add(new Task(defaultTask.size() + 1, currencyPeriod.getClass().getName(), "根据周期获取", candleFluxHandle));
         });
+
 
         return defaultTask;
     }

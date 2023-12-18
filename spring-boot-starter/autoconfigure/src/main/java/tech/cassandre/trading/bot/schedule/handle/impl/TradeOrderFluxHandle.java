@@ -23,6 +23,10 @@ public class TradeOrderFluxHandle implements TaskHandle {
 
     /** Trade flux. */
     private final TradeFlux tradeFlux;
+
+    /**
+     * 任务执行函数.
+     */
     @Override
     public void execute() {
         if (enabled.get()) {

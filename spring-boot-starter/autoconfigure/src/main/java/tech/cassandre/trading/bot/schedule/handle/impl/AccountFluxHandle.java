@@ -19,6 +19,10 @@ public class AccountFluxHandle implements TaskHandle {
     private final AtomicBoolean enabled = new AtomicBoolean(true);
     /** Account flux. */
     private final AccountFlux accountFlux;
+
+    /**
+     * 任务执行函数.
+     */
     @Override
     public void execute() {
         if (enabled.get()) {

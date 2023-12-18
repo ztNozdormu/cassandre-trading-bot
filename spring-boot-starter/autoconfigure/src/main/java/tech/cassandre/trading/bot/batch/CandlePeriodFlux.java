@@ -1,5 +1,6 @@
 package tech.cassandre.trading.bot.batch;
 
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.time.DateUtils;
 import org.knowm.xchange.web3Server.dto.web3.CandleStickDO;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
  * To get a deep understanding of how it works, read the documentation of {@link BaseFlux}.
  */
 @RequiredArgsConstructor
+@Data
 public class CandlePeriodFlux extends BaseFlux<CandleStickDTO> {
 
     /** Application context. */
@@ -39,7 +41,7 @@ public class CandlePeriodFlux extends BaseFlux<CandleStickDTO> {
     /** 默认查询时间. */
     private static final int  S_TIME = -60;
     /** 当前任务执行时的 标的,周期信息. */
-    private static CurrencyPeriod currencyPeriod;
+    private CurrencyPeriod currencyPeriod;
 
     @Override
     protected final Set<CandleStickDTO> getNewValues() {

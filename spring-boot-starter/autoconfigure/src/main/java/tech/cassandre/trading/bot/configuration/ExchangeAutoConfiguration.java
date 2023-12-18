@@ -470,7 +470,7 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
     }
 
     /**
-     * getAccountFlux
+     * getAccountFlux.
      * @return AccountFluxHandle
      */
     @Bean
@@ -500,10 +500,10 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
      * @return TradeOrderFluxHandle
      */
     @Bean
-    @DependsOn({"getOrderFlux","getTradeFlux"})
+    @DependsOn({"getOrderFlux", "getTradeFlux"})
     public TradeOrderFluxHandle getTradeOrderFluxHandle() {
         if (tradeOrderFluxHandle == null) {
-            tradeOrderFluxHandle = new TradeOrderFluxHandle(orderFlux,tradeFlux);
+            tradeOrderFluxHandle = new TradeOrderFluxHandle(orderFlux, tradeFlux);
         }
         return tradeOrderFluxHandle;
     }

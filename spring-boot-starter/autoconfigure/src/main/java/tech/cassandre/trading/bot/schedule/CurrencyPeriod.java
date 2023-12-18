@@ -3,7 +3,6 @@ package tech.cassandre.trading.bot.schedule;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import tech.cassandre.trading.bot.dto.util.CurrencyDTO;
 import tech.cassandre.trading.bot.dto.util.CurrencyPairDTO;
 
 /**
