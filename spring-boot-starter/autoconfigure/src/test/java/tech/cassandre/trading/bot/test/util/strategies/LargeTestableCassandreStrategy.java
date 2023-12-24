@@ -174,11 +174,6 @@ public class LargeTestableCassandreStrategy extends BasicCassandreStrategy {
         Thread.sleep(MINIMUM_METHOD_DURATION.toMillis());
     }
 
-    @Override
-    public TaskManager getTaskManager() {
-        return null;
-    }
-
     /**
      * Return formatted list count.
      *

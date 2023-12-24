@@ -41,9 +41,4 @@ public class NoTradingAccountStrategy extends BasicCassandreStrategy {
         return Optional.empty();
     }
 
-    @Override
-    public TaskManager getTaskManager() {
-        return null;
-    }
-
 }

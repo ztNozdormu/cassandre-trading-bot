@@ -34,9 +34,4 @@ public class Strategy2 extends Strategy {
         return Stream.of(BTC_ETH).collect(Collectors.toSet());
     }
 
-    @Override
-    public TaskManager getTaskManager() {
-        return null;
-    }
-
 }

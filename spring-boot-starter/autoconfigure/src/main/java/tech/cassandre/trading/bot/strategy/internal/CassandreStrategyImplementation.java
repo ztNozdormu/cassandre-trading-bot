@@ -58,10 +58,7 @@ public abstract class CassandreStrategyImplementation extends BaseStrategy imple
 
     /** Positions previous status - used for onPositionsStatusUpdates() - Internal use only. */
     private final Map<Long, PositionStatusDTO> previousPositionsStatus = new LinkedHashMap<>();
-    /**
-     * 交易对数据周期信息.
-     */
-    private Set<CurrencyPeriod> requestedCurrencyPairPeriods = ConcurrentHashMap.newKeySet();
+
     // =================================================================================================================
     // Configuration & dependencies set by Cassandre.
 
@@ -280,8 +277,13 @@ public abstract class CassandreStrategyImplementation extends BaseStrategy imple
                 .peek(positionDTO -> logger.debug("Position {} updated with trade {}", positionDTO.getPositionId(), tradeDTO))
                 .forEach(dependencies.getPositionFlux()::emitValue));
     }
+
+    /**
+     * 自定义代币周期集合默认实现方法.
+     * @return
+     */
     @Override
-    public final Set<CurrencyPeriod> getRequestedCurrencyPairPeriods() {
-        return requestedCurrencyPairPeriods;
+    public Set<CurrencyPeriod> getRequestedCurrencyPairPeriods() {
+        return  ConcurrentHashMap.newKeySet();
     }
 }

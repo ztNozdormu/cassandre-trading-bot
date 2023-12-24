@@ -35,9 +35,5 @@ public class Strategy3 extends Strategy {
         return Stream.of(BTC_USDT, ETH_USDT).collect(Collectors.toSet());
     }
 
-    @Override
-    public TaskManager getTaskManager() {
-        return null;
-    }
 
 }

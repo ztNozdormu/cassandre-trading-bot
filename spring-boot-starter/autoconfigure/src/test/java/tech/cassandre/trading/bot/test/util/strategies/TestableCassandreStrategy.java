@@ -67,6 +67,10 @@ public class TestableCassandreStrategy extends BasicCassandreStrategy {
     /** Requested currency pairs. */
     Set<CurrencyPairDTO> requestedCurrencyPairs = ConcurrentHashMap.newKeySet();
 
+    /**
+     * 交易对数据周期信息.
+     */
+    Set<CurrencyPeriod> requestedCurrencyPairPeriods = ConcurrentHashMap.newKeySet();
 
     /** Initialize flag. */
     private boolean initialized = false;
@@ -90,7 +94,10 @@ public class TestableCassandreStrategy extends BasicCassandreStrategy {
     public final Set<CurrencyPairDTO> getRequestedCurrencyPairs() {
         return requestedCurrencyPairs;
     }
-
+    @Override
+    public final Set<CurrencyPeriod> getRequestedCurrencyPairPeriods() {
+        return requestedCurrencyPairPeriods;
+    }
 
     /**
      * Updates the requested currency pairs.

@@ -1,0 +1,48 @@
+--- #################### 数据库相关配置 ####################
+spring:
+  # 数据源配置项
+  datasource:
+    #driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/cassandre-database?allowMultiQueries=true&useUnicode=true&useSSL=false&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&autoReconnect=true&nullCatalogMeansCurrent=true # MySQL Connector/J 8.X 连接的示例
+    username: root
+    password: 123456
+  jpa:
+    show-sql: false
+    database-platform: org.hibernate.dialect.MySQL55Dialect
+    properties:
+      hibernate:
+        hbm2ddl:
+          auto: update
+  liquibase:
+    enabled: false
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+
+cassandre.trading.bot: # 市场相关配置
+  exchange:   # Exchange configuration.
+    test: true
+#    driverClassName: org.knowm.xchange.okex.OkexExchange
+#    username: ENC(Wi7oU9itkox7qTVOcKuwb2HPmg9c8Gx3)
+#    passphrase: ENC(ZZSgvd6bLwTtZC+KlzAteTphrR+GY88X)
+#    key: ENC(8hx7GsSZKiZM5WMbpswSDT+MBEbk8h3NMpCoRt+96XRqgDrOGHUzgzKHzrAS8IAD)
+#    secret: ENC(gfovccbqgb5SVqQ5QMebb73TmWGjUa5d05cNeXwHwZjJkYViP+9xyH+YGU/vQmP+)
+    driverClassName: org.knowm.xchange.okex.OkexExchange
+    username: 18728474132
+    passphrase: ‘@He1254984260ro’
+    key: 953A32604F43CCBD1A65E943E617A957
+    secret: bdbb3fbc-0947-4ac9-85c1-1f746ac7621c
+    modes:  # Modes.
+      sandbox: true
+      dry: true
+    # Exchange API calls rates (In ms or standard ISO 8601 duration like 'PT5S').
+    rates:
+      account: 100
+      ticker: 101
+      trade: 102
+cassandre:
+  trading:
+    jasypt:
+      encryptor:
+        password: "启动参数传入"
+        property:
+          prefix: "ENC@["
+          suffix: "]"
