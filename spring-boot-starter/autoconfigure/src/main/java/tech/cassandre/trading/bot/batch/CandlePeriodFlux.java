@@ -58,11 +58,11 @@ public class CandlePeriodFlux extends BaseFlux<CandleStickDTO> {
                 .flatMap(Set::stream)
                 .collect(Collectors.toCollection(LinkedHashSet::new));
 
-        Date startDate = DateUtils.addDays(new Date(), S_TIME);
-        Set<CandleStickDO> candleStickDOS = new HashSet<>();
+            Date startDate = DateUtils.addDays(new Date(), S_TIME);
+            Set<CandleStickDO> candleStickDOS = new HashSet<>();
 
             MkCandleStickDTO mkCandleStickDTO = new MkCandleStickDTO();
-          // mkCandleStickDTO.setCurrencyPair(currencyPeriod.getCurrencyPairDTO());
+            mkCandleStickDTO.setCurrencyPair(CURRENCY_MAPPER.mapToCurrencyPair(currencyPeriod.getCurrencyPairDTO()));
             mkCandleStickDTO.setExchangeType("okex");
             mkCandleStickDTO.setStartDate(startDate);
             mkCandleStickDTO.setEndDate(new Date());
