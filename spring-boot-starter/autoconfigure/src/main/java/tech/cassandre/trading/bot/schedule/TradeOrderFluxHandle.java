@@ -1,18 +1,14 @@
-package tech.cassandre.trading.bot.schedule.handle.impl;
+package tech.cassandre.trading.bot.schedule;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
 import tech.cassandre.trading.bot.batch.OrderFlux;
 import tech.cassandre.trading.bot.batch.TradeFlux;
-import tech.cassandre.trading.bot.schedule.handle.TaskHandle;
-
 import javax.annotation.PreDestroy;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 交易订单Flux执行器.
  */
-@Component
 @RequiredArgsConstructor
 public class TradeOrderFluxHandle implements TaskHandle {
 

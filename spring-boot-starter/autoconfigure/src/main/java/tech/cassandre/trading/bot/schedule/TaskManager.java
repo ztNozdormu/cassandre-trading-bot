@@ -2,13 +2,6 @@ package tech.cassandre.trading.bot.schedule;
 
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import tech.cassandre.trading.bot.schedule.handle.impl.AccountFluxHandle;
-import tech.cassandre.trading.bot.schedule.handle.impl.CandleFluxHandle;
-import tech.cassandre.trading.bot.schedule.handle.impl.TickerFluxHandle;
-import tech.cassandre.trading.bot.schedule.handle.impl.TradeOrderFluxHandle;
-
-import javax.annotation.Resource;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -17,29 +10,25 @@ import java.util.concurrent.ConcurrentHashMap;
  * 任务管理器.
  */
 @Data
-@Component
 @RequiredArgsConstructor
 public class TaskManager {
     /**
      * accountFluxHandle对象注入.
      */
-    @Resource
-    private  AccountFluxHandle accountFluxHandle;
+    private final AccountFluxHandle accountFluxHandle;
     /**
      * tickerFluxHandle对象注入.
      */
-    @Resource
-    private  TickerFluxHandle tickerFluxHandle;
+    private final TickerFluxHandle tickerFluxHandle;
     /**
      * tradeOrderFluxHandle对象注入.
      */
-    @Resource
-    private  TradeOrderFluxHandle tradeOrderFluxHandle;
+    private final TradeOrderFluxHandle tradeOrderFluxHandle;
     /**
      * candleFluxHandle对象注入.
      */
-    @Resource
-    private  CandleFluxHandle candleFluxHandle;
+
+    private final CandleFluxHandle candleFluxHandle;
 
     /**
      * 默认任务集合.

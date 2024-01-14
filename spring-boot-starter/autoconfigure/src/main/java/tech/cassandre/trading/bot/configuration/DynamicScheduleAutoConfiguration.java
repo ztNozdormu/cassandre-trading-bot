@@ -15,8 +15,6 @@ import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 import org.springframework.scheduling.support.CronTrigger;
 import tech.cassandre.trading.bot.schedule.TaskManager;
 
-import javax.annotation.Resource;
-
 @Configuration
 @EnableScheduling
 @Slf4j
@@ -33,8 +31,7 @@ public class DynamicScheduleAutoConfiguration implements SchedulingConfigurer {
     /**
      * 任务管理器.
      */
-    @Resource
-    private TaskManager taskManager;
+    private final TaskManager taskManager;
 
     /**
      * 任务配置.

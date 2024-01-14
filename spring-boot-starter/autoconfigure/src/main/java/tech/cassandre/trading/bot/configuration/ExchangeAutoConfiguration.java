@@ -28,10 +28,11 @@ import tech.cassandre.trading.bot.batch.PositionFlux;
 import tech.cassandre.trading.bot.repository.OrderRepository;
 import tech.cassandre.trading.bot.repository.PositionRepository;
 import tech.cassandre.trading.bot.repository.TradeRepository;
-import tech.cassandre.trading.bot.schedule.handle.impl.AccountFluxHandle;
-import tech.cassandre.trading.bot.schedule.handle.impl.CandleFluxHandle;
-import tech.cassandre.trading.bot.schedule.handle.impl.TickerFluxHandle;
-import tech.cassandre.trading.bot.schedule.handle.impl.TradeOrderFluxHandle;
+import tech.cassandre.trading.bot.schedule.AccountFluxHandle;
+import tech.cassandre.trading.bot.schedule.CandleFluxHandle;
+import tech.cassandre.trading.bot.schedule.TickerFluxHandle;
+import tech.cassandre.trading.bot.schedule.TradeOrderFluxHandle;
+import tech.cassandre.trading.bot.schedule.TaskManager;
 import tech.cassandre.trading.bot.service.ExchangeService;
 import tech.cassandre.trading.bot.service.ExchangeServiceXChangeImplementation;
 import tech.cassandre.trading.bot.service.MarketService;
@@ -129,14 +130,17 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
     /** Position flux. */
     private PositionFlux positionFlux;
 
-    /** Position flux. */
+    /** AccountFluxHandle flux. */
     private static AccountFluxHandle accountFluxHandle;
-    /** Position flux. */
+    /** TickerFluxHandle flux. */
     private static TickerFluxHandle tickerFluxHandle;
-    /** Position flux. */
+    /** TradeOrderFluxHandle flux. */
     private static TradeOrderFluxHandle tradeOrderFluxHandle;
-    /** Position flux. */
+    /** CandleFluxHandle flux. */
     private static CandleFluxHandle candleFluxHandle;
+
+    /** TaskManager flux. */
+    private static TaskManager taskManager;
 
     /**
      * Instantiating the exchange services based on user parameters.
@@ -519,6 +523,18 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
             candleFluxHandle = new CandleFluxHandle(candlePeriodFlux);
         }
         return candleFluxHandle;
+    }
+    /**
+     * getCandlePeriodFlux.
+     * @return CandleFluxHandle
+     */
+    @Bean
+    @DependsOn({"getAccountFluxHandle", "getTickerFluxHandle", "getTradeOrderFluxHandle", "getCandleFluxHandle"})
+    public TaskManager getTaskManager() {
+        if (taskManager == null) {
+            taskManager = new TaskManager(accountFluxHandle, tickerFluxHandle, tradeOrderFluxHandle, candleFluxHandle);
+        }
+        return taskManager;
     }
 
 }

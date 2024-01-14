@@ -1,4 +1,4 @@
-package tech.cassandre.trading.bot.schedule.handle;
+package tech.cassandre.trading.bot.schedule;
 
 /**
  * 任务执行接口.

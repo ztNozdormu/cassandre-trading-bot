@@ -2,7 +2,7 @@ package tech.cassandre.trading.bot.schedule;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import tech.cassandre.trading.bot.schedule.handle.TaskHandle;
+
 
 /**
  * 基础任务.

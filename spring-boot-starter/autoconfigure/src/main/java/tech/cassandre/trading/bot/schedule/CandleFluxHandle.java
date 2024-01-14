@@ -1,32 +1,35 @@
-package tech.cassandre.trading.bot.schedule.handle.impl;
+package tech.cassandre.trading.bot.schedule;
 
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
-import tech.cassandre.trading.bot.batch.TickerFlux;
-import tech.cassandre.trading.bot.schedule.handle.TaskHandle;
-
+import lombok.Setter;
+import tech.cassandre.trading.bot.batch.CandlePeriodFlux;
 import javax.annotation.PreDestroy;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * tiker Flux执行器.
  */
-@Component
+@Setter
+@Getter
 @RequiredArgsConstructor
-public class TickerFluxHandle implements TaskHandle {
+public class CandleFluxHandle implements TaskHandle {
 
     /** Flux continues to run as long as enabled is set to true. */
     private final AtomicBoolean enabled = new AtomicBoolean(true);
-    /** Ticker flux. */
-    private final TickerFlux tickerFlux;
+    /** Candle stick history flux. */
+    private final CandlePeriodFlux candlePeriodFlux;
 
+    /** 当前任务执行时的 标的,周期信息. */
+    private CurrencyPeriod currencyPeriod;
     /**
      * 任务执行函数.
      */
     @Override
     public void execute() {
-        if (enabled.get() && tickerFlux != null) {
-            tickerFlux.update();
+        if (enabled.get() && candlePeriodFlux != null) {
+            candlePeriodFlux.setCurrencyPeriod(currencyPeriod);
+            candlePeriodFlux.update();
         }
     }
 
