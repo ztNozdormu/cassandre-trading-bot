@@ -177,13 +177,14 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
                 } else {
                     xChangeExchange = ExchangeFactory.INSTANCE.createExchange(exchangeSpecification);
                 }
-                xChangeAccountService = xChangeExchange.getAccountService();
-                xChangeTradeService = xChangeExchange.getTradeService();
-                xChangeAccountService.getAccountInfo();
+
+              //  xChangeTradeService = xChangeExchange.getTradeService();
+              //  xChangeAccountService.getAccountInfo();
             } else {
                 xChangeExchange = ExchangeFactory.INSTANCE.createExchange(exchangeSpecification);
             }
-
+            xChangeAccountService = xChangeExchange.getAccountService();
+            xChangeTradeService = xChangeExchange.getTradeService();
             xChangeMarketDataService = xChangeExchange.getMarketDataService();
 
             if (exchangeParameters.isTickerStreamEnabled()) {
@@ -214,17 +215,17 @@ public class ExchangeAutoConfiguration extends BaseConfiguration {
             throw new ConfigurationException("Impossible to find the exchange driver class you requested: " + exchangeParameters.getDriverClassName(),
                     "Choose and configure a valid exchange (https://trading-bot.cassandre.tech/learn/exchange-connection-configuration.html#how-does-it-works)");
 
-        } catch (HttpStatusIOException e) {
-            if (e.getHttpStatusCode() == UNAUTHORIZED_STATUS_CODE) {
-                // Authorization failure.
-                throw new ConfigurationException("Invalid credentials for " + exchangeParameters.getDriverClassName(),
-                        "Check your exchange credentials: " + e.getMessage() + " - login used: " + exchangeParameters.getUsername());
-            } else {
-                // Another HTTP failure.
-                throw new ConfigurationException("Error while connecting to the exchange: " + e.getMessage());
-            }
-        } catch (IOException e) {
-            throw new ConfigurationException("IO error: " + e.getMessage());
+//        } catch (HttpStatusIOException e) {
+//            if (e.getHttpStatusCode() == UNAUTHORIZED_STATUS_CODE) {
+//                // Authorization failure.
+//                throw new ConfigurationException("Invalid credentials for " + exchangeParameters.getDriverClassName(),
+//                        "Check your exchange credentials: " + e.getMessage() + " - login used: " + exchangeParameters.getUsername());
+//            } else {
+//                // Another HTTP failure.
+//                throw new ConfigurationException("Error while connecting to the exchange: " + e.getMessage());
+//            }
+//        } catch (IOException e) {
+//            throw new ConfigurationException("IO error: " + e.getMessage());
         }
     }
 
