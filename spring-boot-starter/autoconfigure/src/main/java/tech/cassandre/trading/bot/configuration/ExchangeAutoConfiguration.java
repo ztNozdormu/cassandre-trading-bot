@@ -48,9 +48,7 @@ import tech.cassandre.trading.bot.strategy.internal.CassandreStrategyInterface;
 import tech.cassandre.trading.bot.util.base.configuration.BaseConfiguration;
 import tech.cassandre.trading.bot.util.exception.ConfigurationException;
 import tech.cassandre.trading.bot.util.parameters.ExchangeParameters;
-import si.mazi.rescu.HttpStatusIOException;
 import javax.annotation.PostConstruct;
-import java.io.IOException;
 import java.util.Objects;
 import java.util.Set;
 /**
